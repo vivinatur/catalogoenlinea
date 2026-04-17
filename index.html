@@ -81,6 +81,285 @@ img{max-width:100%;display:block}
 </style>
 </head>
 <body>
-<!-- contenido omitido por brevedad pero incluido completo -->
+
+<div id="view-public" class="view active">
+  <header class="pub-header">
+    <div class="pub-header-inner">
+      <div>
+        <div class="hlogo" id="pub-brand-name">VIVINATUR</div>
+        <div class="hlogo-sub">Cosmética Natural</div>
+      </div>
+      <div class="hactions">
+        <button class="hbtn admin" onclick="showLogin()">⚙ Admin</button>
+        <button class="hbtn ghost" onclick="toggleCart()">
+          🛒 Carrito <span class="cart-badge" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1 class="hero-title" id="pub-hero-title">Cosmética <em>Artesanal</em></h1>
+    <p style="color:rgba(255,255,255,0.7); max-width:600px; margin:0 auto;">Inspirada en la pureza de la tierra, formulada para tu bienestar.</p>
+  </section>
+
+  <section class="cat-section">
+    <div id="product-grid" class="grid"></div>
+  </section>
+</div>
+
+<div id="modal-login" class="overlay">
+  <div class="modal" style="max-width:300px; text-align:center;">
+    <h3 style="margin-bottom:1rem">Acceso Admin</h3>
+    <input type="password" id="admin-pass" placeholder="Contraseña" style="width:100%; padding:.8rem; margin-bottom:1rem; border-radius:8px; border:1px solid #ccc;">
+    <button onclick="login()" style="width:100%; padding:.8rem; background:var(--bark); color:#fff; border:none; border-radius:8px; cursor:pointer;">Entrar</button>
+    <button onclick="closeModals()" style="background:none; border:none; margin-top:1rem; color:var(--muted); cursor:pointer;">Cancelar</button>
+  </div>
+</div>
+
+<div id="modal-cart" class="overlay">
+  <div class="modal">
+    <h3>Tu Carrito</h3>
+    <div id="cart-items" style="margin:1.5rem 0; max-height:300px; overflow-y:auto;"></div>
+    <div style="border-top:2px solid var(--sand3); padding-top:1rem; font-weight:700; display:flex; justify-content:space-between;">
+      <span>Total:</span>
+      <span id="cart-total">$0</span>
+    </div>
+    <button onclick="sendWhatsApp()" style="width:100%; margin-top:1.5rem; padding:1rem; background:#25D366; color:#fff; border:none; border-radius:8px; font-weight:700; cursor:pointer;">Completar Pedido vía WhatsApp</button>
+    <button onclick="closeModals()" style="width:100%; margin-top:.5rem; background:none; border:none; color:var(--muted); cursor:pointer;">Seguir comprando</button>
+  </div>
+</div>
+
+<div id="view-admin" class="view">
+  <div class="admin-container">
+    <nav class="sidebar">
+      <h2 style="font-family:serif; margin-bottom:2rem;">Panel Pro</h2>
+      <button class="admin-nav-btn active" onclick="showAdminTab('products')">📦 Productos</button>
+      <button class="admin-nav-btn" onclick="showAdminTab('costs')">💰 Calculadora de Costos</button>
+      <button class="admin-nav-btn" onclick="showAdminTab('brand')">🌿 Mi Marca</button>
+      <button class="admin-nav-btn" onclick="exitAdmin()" style="margin-top:2rem; color:var(--clay2)">← Salir al Sitio</button>
+    </nav>
+    
+    <main class="main-admin">
+      <div id="admin-tab-products" class="admin-tab-content">
+        <div class="admin-card">
+          <h3>Agregar Producto</h3>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem;">
+            <div class="form-group"><label>Nombre</label><input id="inp-p-name"></div>
+            <div class="form-group"><label>Precio</label><input type="number" id="inp-p-price"></div>
+            <div class="form-group"><label>Imagen URL</label><input id="inp-p-img" placeholder="https://..."></div>
+            <div class="form-group"><label>Categoría</label>
+              <select id="inp-p-cat">
+                <option>Cremas</option><option>Aceites</option><option>Jabones</option>
+              </select>
+            </div>
+            <div class="form-group" style="grid-column: span 2;"><label>Descripción</label><textarea id="inp-p-desc"></textarea></div>
+          </div>
+          <button onclick="addProduct()" style="padding:.8rem 1.5rem; background:var(--moss); color:#fff; border:none; border-radius:8px; cursor:pointer;">Publicar Producto</button>
+          <button onclick="runIA()" style="padding:.8rem 1.5rem; background:var(--bark); color:#fff; border:none; border-radius:8px; cursor:pointer; margin-left:1rem;">✨ Completar con IA</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>Productos Publicados</h3>
+          <div id="admin-product-list"></div>
+        </div>
+      </div>
+
+      <div id="admin-tab-costs" class="admin-tab-content" style="display:none">
+        <div class="admin-card">
+          <h3>Cálculo de Fórmulas</h3>
+          <table class="cost-table">
+            <thead><tr><th>Insumo</th><th>Costo Unit.</th><th>Cant. usada</th><th>Subtotal</th><th></th></tr></thead>
+            <tbody id="cost-tbody"></tbody>
+          </table>
+          <button onclick="addCostRow()" style="margin-top:1rem; background:none; border:1px dashed var(--bark); padding:.5rem; width:100%; cursor:pointer;">+ Agregar Insumo</button>
+          <div style="margin-top:2rem; padding:1rem; background:var(--green-lite); border-radius:10px;">
+            <p>Costo Producción: <strong id="res-cost-prod">$0</strong></p>
+            <p>Precio Sugerido (+40%): <strong id="res-cost-suggest" style="color:var(--green);">$0</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="admin-tab-brand" class="admin-tab-content" style="display:none">
+        <div class="admin-card">
+          <h3>Ajustes de Marca</h3>
+          <div class="form-group"><label>Nombre de Emprendimiento</label><input id="inp-b-name"></div>
+          <div class="form-group"><label>WhatsApp (ej: 5491166778899)</label><input id="inp-b-wa"></div>
+          <button onclick="saveBrand()" style="padding:.8rem 1.5rem; background:var(--moss); color:#fff; border:none; border-radius:8px; cursor:pointer;">Actualizar Marca</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// --- ESTADO Y DATOS ---
+let products = JSON.parse(localStorage.getItem('vv_prods')) || [];
+let brand = JSON.parse(localStorage.getItem('vv_brand')) || { name: 'VIVINATUR', wa: '', title: 'Cosmética Artesanal' };
+let cart = [];
+
+// --- NAVEGACIÓN ---
+function showLogin() { document.getElementById('modal-login').classList.add('on'); }
+function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.classList.remove('on')); }
+
+function login() {
+    if(document.getElementById('admin-pass').value === 'vivinatur2026') {
+        document.getElementById('view-public').classList.remove('active');
+        document.getElementById('view-admin').classList.add('active');
+        closeModals();
+        renderAdminProds();
+    } else {
+        alert('Clave incorrecta');
+    }
+}
+
+function exitAdmin() {
+    document.getElementById('view-admin').classList.remove('active');
+    document.getElementById('view-public').classList.add('active');
+    renderPublic();
+}
+
+function showAdminTab(tab) {
+    document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
+    document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('admin-tab-' + tab).style.display = 'block';
+    event.currentTarget.classList.add('active');
+}
+
+// --- PRODUCTOS ---
+function addProduct() {
+    const p = {
+        id: Date.now(),
+        name: document.getElementById('inp-p-name').value,
+        price: parseFloat(document.getElementById('inp-p-price').value),
+        img: document.getElementById('inp-p-img').value || 'https://via.placeholder.com/300',
+        cat: document.getElementById('inp-p-cat').value,
+        desc: document.getElementById('inp-p-desc').value
+    };
+    products.push(p);
+    saveData();
+    renderAdminProds();
+    msg('Producto publicado');
+}
+
+function renderAdminProds() {
+    const list = document.getElementById('admin-product-list');
+    list.innerHTML = products.map(p => `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:1rem; border-bottom:1px solid #eee;">
+            <span>${p.name} - <strong>$${p.price}</strong></span>
+            <button onclick="deleteProd(${p.id})" style="color:red; background:none; border:none; cursor:pointer;">Eliminar</button>
+        </div>
+    `).join('');
+}
+
+function deleteProd(id) {
+    products = products.filter(p => p.id !== id);
+    saveData();
+    renderAdminProds();
+}
+
+// --- CARRITO ---
+function renderPublic() {
+    document.getElementById('pub-brand-name').textContent = brand.name;
+    const grid = document.getElementById('product-grid');
+    grid.innerHTML = products.map(p => `
+        <div class="card">
+            <img src="${p.img}" class="card-img">
+            <div class="card-body">
+                <small style="color:var(--clay)">${p.cat}</small>
+                <h4 style="margin:.3rem 0">${p.name}</h4>
+                <p style="font-size:.8rem; color:var(--sub)">${p.desc}</p>
+                <div class="card-price">$${p.price}</div>
+                <button class="card-cta" onclick="addToCart(${p.id})">Agregar al Carrito</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function addToCart(id) {
+    const p = products.find(x => x.id === id);
+    cart.push(p);
+    updateCartUI();
+    msg('Agregado al carrito');
+}
+
+function updateCartUI() {
+    document.getElementById('cart-count').textContent = cart.length;
+    document.getElementById('cart-count').style.display = cart.length ? 'flex' : 'none';
+    const list = document.getElementById('cart-items');
+    let total = 0;
+    list.innerHTML = cart.map(item => {
+        total += item.price;
+        return `<div style="display:flex; justify-content:space-between; margin-bottom:.5rem;">
+            <span>${item.name}</span>
+            <span>$${item.price}</span>
+        </div>`;
+    }).join('');
+    document.getElementById('cart-total').textContent = '$' + total;
+}
+
+function toggleCart() { document.getElementById('modal-cart').classList.add('on'); updateCartUI(); }
+
+function sendWhatsApp() {
+    if(!brand.wa) return alert('Configura tu WhatsApp en el Panel Admin');
+    let text = `Hola ${brand.name}! Quiero hacer un pedido:%0A%0A`;
+    cart.forEach(i => text += `- ${i.name} ($${i.price})%0A`);
+    text += `%0ATotal: ${document.getElementById('cart-total').textContent}`;
+    window.open(`https://wa.me/${brand.wa}?text=${text}`, '_blank');
+}
+
+// --- COSTOS ---
+function addCostRow() {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input style="width:100px"></td><td><input type="number" class="c-unit" value="0" oninput="calcCosts()"></td><td><input type="number" class="c-qty" value="0" oninput="calcCosts()"></td><td class="c-sub">$0</td><td><button onclick="this.parentElement.parentElement.remove(); calcCosts();">✕</button></td>`;
+    document.getElementById('cost-tbody').appendChild(tr);
+}
+
+function calcCosts() {
+    let total = 0;
+    document.querySelectorAll('#cost-tbody tr').forEach(tr => {
+        const sub = (tr.querySelector('.c-unit').value || 0) * (tr.querySelector('.c-qty').value || 0);
+        tr.querySelector('.c-sub').textContent = '$' + sub;
+        total += sub;
+    });
+    document.getElementById('res-cost-prod').textContent = '$' + total;
+    document.getElementById('res-cost-suggest').textContent = '$' + (total * 1.4);
+}
+
+// --- IA ---
+function runIA() {
+    const name = document.getElementById('inp-p-name').value;
+    if(!name) return alert('Escribe el nombre del producto');
+    msg('IA analizando...');
+    setTimeout(() => {
+        document.getElementById('inp-p-desc').value = `Fórmula magistral potenciada con activos naturales. Ideal para el cuidado diario.`;
+        document.getElementById('inp-p-price').value = 4500;
+        msg('Ficha completada');
+    }, 1500);
+}
+
+function saveBrand() {
+    brand.name = document.getElementById('inp-b-name').value;
+    brand.wa = document.getElementById('inp-b-wa').value;
+    saveData();
+    msg('Marca actualizada');
+}
+
+function saveData() {
+    localStorage.setItem('vv_prods', JSON.stringify(products));
+    localStorage.setItem('vv_brand', JSON.stringify(brand));
+}
+
+function msg(t) {
+    const toast = document.getElementById('toast');
+    toast.textContent = t;
+    toast.style.display = 'block';
+    setTimeout(() => toast.style.display = 'none', 3000);
+}
+
+renderPublic();
+</script>
 </body>
 </html>
