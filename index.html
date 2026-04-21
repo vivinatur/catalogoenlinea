@@ -30,7 +30,15 @@ img{max-width:100%;display:block}
 
 /* ═══ HEADER ═══ */
 .pub-header{background:var(--bark);position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.2)}
-.pub-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.8rem}
+.pub-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .9rem 1.8rem;
+  flex-wrap: wrap; 
+}
 .hlogo{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--cream);letter-spacing:.2em;font-weight:300;line-height:1}
 .hlogo-sub{font-size:.57rem;letter-spacing:.3em;text-transform:uppercase;color:var(--clay2);margin-top:.1rem}
 .hactions{display:flex;align-items:center;gap:.7rem}
@@ -39,6 +47,25 @@ img{max-width:100%;display:block}
 .hbtn.ghost:hover{background:rgba(232,168,130,.12)}
 .hbtn.admin{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:.7rem}
 .hbtn.admin:hover{background:rgba(255,255,255,.13);color:rgba(255,255,255,.8)}
+  /* Ajuste específico para celulares */
+@media (max-width: 480px) {
+  .pub-header-inner {
+    flex-direction: column; /* Pone el logo arriba y botones abajo */
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .hactions {
+    width: 100%;
+    justify-content: center; /* Centra los botones en el celular */
+    gap: .5rem;
+  }
+
+  .hbtn {
+    padding: .4rem .7rem; /* Reduce un poco el tamaño de los botones */
+    font-size: .65rem;
+  }
+}
 
 /* ═══ HERO ═══ */
 .hero{background:linear-gradient(168deg,var(--bark) 0%,#3d2318 50%,#6b4030 100%);padding:5rem 1.8rem 4.5rem;text-align:center;position:relative;overflow:hidden}
