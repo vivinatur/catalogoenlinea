@@ -181,11 +181,6 @@ Tú verás:
 - Muestra los productos en el carrito
 - Funciona igual que cuando un cliente compra
 
-💾 DESCARGAR DATOS
-- Descarga un archivo JSON con TODOS tus datos
-- Incluye: productos, comentarios, marca, contacto
-- Usa esto como BACKUP regularmente
-- Si tu navegador se reinicia, podrás restaurar los datos
 
 🔗 COMPARTIR CATÁLOGO
 - Copia el link del catálogo al portapapeles
