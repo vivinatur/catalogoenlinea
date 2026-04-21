@@ -181,7 +181,33 @@ img{max-width:100%;display:block}
 .review-name{font-weight:600;color:var(--bark);margin-bottom:.4rem;font-size:.9rem}
 .review-text{font-size:.82rem;color:var(--sub);line-height:1.6}
 .review-date{font-size:.7rem;color:var(--muted);margin-top:.5rem}
+<section id="admin-section" style="display:none; padding: 2rem; background: var(--sand); border-top: 2px solid var(--sand3);">
+  <div style="max-width: 800px; margin: 0 auto; background: var(--white); padding: 2rem; border-radius: 15px;">
+    <h2 style="font-family:'Playfair Display'; color: var(--bark);">Panel de Costos Vivinatur</h2>
+    
+    <div id="materia-prima-lista" style="margin-top:1.5rem;">
+      <label style="font-weight: bold;">Materias Primas</label>
+      <div class="input-row" style="display: flex; gap: 5px; margin-bottom: 10px;">
+        <input type="text" placeholder="Ingrediente" style="flex: 2; padding: 8px;">
+        <input type="number" placeholder="$" class="costo-item" style="flex: 1; padding: 8px;">
+      </div>
+    </div>
+    <button onclick="agregarFilaMateria()" style="margin-bottom: 1rem;">+ Añadir Insumo</button>
 
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <input type="number" id="costo-envase" placeholder="Envase $">
+      <input type="number" id="costo-etiqueta" placeholder="Etiqueta $">
+      <input type="number" id="tiempo-horas" placeholder="Horas de trabajo">
+      <input type="number" id="valor-hora" value="1000" title="Precio por hora">
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1rem; background: var(--moss-lite); border-radius: 8px;">
+      <p>Pérdida sugerida (5%): <span id="res-perdida">$0</span></p>
+      <h3 style="color: var(--bark);">COSTO TOTAL: <span id="res-total">$0</span></h3>
+      <button onclick="calcularTodo()" style="width:100%; padding: 10px; background: var(--clay); color: white; border: none;">CALCULAR</button>
+    </div>
+  </div>
+</section>
 /* ═══ FOOTER ═══ */
 .pub-footer{background:var(--bark);padding:2rem 1.8rem;text-align:center}
 .footer-logo{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--cream);letter-spacing:.2em;font-weight:300;margin-bottom:.4rem}
