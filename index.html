@@ -22,57 +22,53 @@ const firebaseConfig = {
   measurementId: "G-928ZYV7JRQ"
 };
 
-// Inicialización
+// Inicialización limpia
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
 let isAdmin = false;
 
-// --- SECCIÓN ADMIN ---
-
-// Función para loguearte (puedes llamarla desde un botón o consola)
+// --- GESTIÓN DE ADMINISTRADOR ---
 window.loginAdmin = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    alert("¡Hola Admin! Sesión iniciada.");
+    alert("¡Sesión de Admin iniciada!");
   } catch (error) {
     alert("Error: " + error.message);
   }
 };
 
-// Escuchador de usuario
 onAuthStateChanged(auth, (user) => {
   isAdmin = !!user;
   if (user) {
     document.body.classList.add('admin-mode');
     console.log("Modo administrador activo");
+  } else {
+    document.body.classList.remove('admin-mode');
   }
 });
 
-// Función para borrar comentarios (Solo tú podrás)
 window.borrarComentario = (id) => {
-  if (confirm("¿Eliminar este comentario?")) {
+  if (confirm("¿Eliminar este comentario permanentemente?")) {
     remove(ref(db, `comentarios/${id}`))
-      .then(() => alert("Eliminado"))
-      .catch(() => alert("No tienes permisos"));
+      .then(() => alert("Comentario eliminado"))
+      .catch(() => alert("No tienes permisos suficientes"));
   }
 };
 
-// --- SECCIÓN PÚBLICA ---
-
-// FUNCIÓN PARA GUARDAR (Realtime DB)
+// --- GESTIÓN DE RESEÑAS PÚBLICAS ---
 window.saveReview = () => {
   const nombre = document.getElementById('revName').value;
   const mensaje = document.getElementById('revText').value;
   const estrellas = document.getElementById('revRating').value;
 
-  if(!nombre || !mensaje) return alert("Por favor, completa los campos");
+  if(!nombre || !mensaje) return alert("Por favor, completa nombre y opinión");
 
   const listaRef = ref(db, 'comentarios');
-  const nuevoComentarioRef = push(listaRef);
+  const nuevoRef = push(listaRef);
   
-  set(nuevoComentarioRef, {
+  set(nuevoRef, {
     nombre: nombre,
     mensaje: mensaje,
     estrellas: parseInt(estrellas),
@@ -84,33 +80,30 @@ window.saveReview = () => {
   });
 };
 
-// FUNCIÓN PARA LEER Y MOSTRAR
+// Leer comentarios en tiempo real
 const container = document.getElementById('reviewsContainer');
 onValue(ref(db, 'comentarios'), (snapshot) => {
   const data = snapshot.val();
   container.innerHTML = "";
   
   if(data) {
-    // Convertimos a array y revertimos para ver los más nuevos primero
     Object.keys(data).reverse().forEach(key => {
       const review = data[key];
       const stars = '★'.repeat(review.estrellas) + '☆'.repeat(5 - review.estrellas);
-      
-      // Si eres admin, aparece el botón de borrar
-      const btnBorrar = isAdmin ? `<button onclick="borrarComentario('${key}')" style="color:red; background:none; border:none; cursor:pointer; display:block; margin-top:10px;">Eliminar</button>` : '';
+      const btnBorrar = isAdmin ? `<button onclick="borrarComentario('${key}')" style="color:var(--red); background:none; border:none; cursor:pointer; display:block; margin-top:10px; font-size:12px;">Eliminar Opinión</button>` : '';
 
       container.innerHTML += `
-        <div class="review-card" style="background:white; padding:15px; margin-bottom:15px; border-radius:8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-          <div style="display:flex; justify-content:space-between;">
-            <strong>${review.nombre}</strong>
-            <span style="color:#b08038">${stars}</span>
+        <div class="review-card" style="background:var(--white); padding:1.5rem; border-radius:8px; margin-bottom:1rem; box-shadow:var(--sh)">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem">
+            <strong style="color:var(--bark)">${review.nombre}</strong>
+            <span style="color:var(--gold)">${stars}</span>
           </div>
-          <p style="margin-top:5px; color:#444;">${review.mensaje}</p>
+          <p style="color:var(--text); font-size:0.95rem">${review.mensaje}</p>
           ${btnBorrar}
         </div>`;
     });
   } else {
-    container.innerHTML = "<p>No hay opiniones todavía.</p>";
+    container.innerHTML = "<p style='text-align:center; color:var(--muted)'>Aún no hay opiniones. ¡Sé el primero!</p>";
   }
 });
 </script>
@@ -1956,7 +1949,7 @@ renderIAGrid();
 // Cargar logo guardado
 updateLogoUI(lsGet('vv_logo', null));
   <footer style="margin-top: 50px; padding: 20px; text-align: center; opacity: 0.4;">
-  <button onclick="const p = prompt('Password de Admin:'); loginAdmin('yesicabarros27@gmail.com', p)" 
+  <button onclick="const p = prompt('Password de Admin:'); loginAdmin('TU_EMAIL_AQUI', p)" 
           style="background:none; border:1px solid var(--muted); color:var(--muted); padding:5px 10px; cursor:pointer; font-size:11px;">
     Acceso Gestión
   </button>
