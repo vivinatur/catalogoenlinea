@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vivinatur — Cosmética Natural</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bark:#2d1f14; --bark2:#4a3728;
+  --moss:#3d5a3e; --moss2:#5a7d5b; --moss-lite:#eef4ee;
+  --sand:#f5efe6; --sand2:#ede3d5; --sand3:#d4c4b0;
+  --clay:#c4856a; --clay2:#e8a882;
+  --cream:#faf6f0; --white:#fff;
+  --text:#2d2418; --sub:#7a6a58; --muted:#a8998a;
+  --gold:#b08038; --gold-lite:#fdf5e6;
+  --red:#b5422a; --red-lite:#fdf0ed;
+  --green:#3a6b3b; --green-lite:#eef5ee;
+  --violet:#7a4d8a;
+  --border:rgba(196,133,106,0.22);
+  --sh:0 4px 28px rgba(45,31,20,.08);
+  --sh2:0 12px 50px rgba(45,31,20,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text)}
+img{max-width:100%;display:block}
+.view{display:none} .view.active{display:block}
+::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-thumb{background:var(--sand3);border-radius:3px}
+
+/* ═══ HEADER ═══ */
+.pub-header{background:var(--bark);position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.2)}
+.pub-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.8rem}
+.hlogo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--cream);letter-spacing:.2em;font-weight:300;line-height:1}
+.hlogo-sub{font-size:.57rem;letter-spacing:.3em;text-transform:uppercase;color:var(--clay2);margin-top:.1rem}
+.hactions{display:flex;align-items:center;gap:.7rem}
+.hbtn{padding:.44rem 1rem;border-radius:20px;font-family:'Nunito',sans-serif;font-size:.74rem;cursor:pointer;transition:all .2s;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;font-weight:500}
+.hbtn.ghost{background:transparent;border:1px solid rgba(232,168,130,.35);color:var(--clay2)}
+.hbtn.ghost:hover{background:rgba(232,168,130,.12)}
+.hbtn.admin{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:.7rem}
+.hbtn.admin:hover{background:rgba(255,255,255,.13);color:rgba(255,255,255,.8)}
+
+/* ═══ HERO ═══ */
+.hero{background:linear-gradient(168deg,var(--bark) 0%,#3d2318 50%,#6b4030 100%);padding:5rem 1.8rem 4.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(196,133,106,.08) 1px,transparent 1px);background-size:38px 38px}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:50px;background:var(--cream);clip-path:ellipse(58% 100% at 50% 100%)}
+.hero-badge{display:inline-block;background:rgba(196,133,106,.18);border:1px solid rgba(196,133,106,.28);color:var(--clay2);font-size:.63rem;letter-spacing:.22em;text-transform:uppercase;padding:.35rem .9rem;border-radius:20px;margin-bottom:1.5rem;position:relative}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,6vw,4.8rem);color:var(--cream);font-weight:300;line-height:1.1;margin-bottom:1.5rem;position:relative}
+.hero-title em{color:var(--clay2);font-style:italic}
+.hero-sub{font-size:.93rem;color:rgba(245,239,230,.68);max-width:490px;margin:0 auto 2.5rem;line-height:1.9;font-weight:300;position:relative}
+.hero-pills{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;position:relative}
+.pill{padding:.28rem .85rem;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);color:rgba(245,239,230,.73);font-size:.7rem}
+
+/* ═══ ABOUT ═══ */
+.about{background:var(--white);border-bottom:1px solid var(--border)}
+.about-inner{max-width:1100px;margin:0 auto;padding:3.5rem 1.8rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+@media(max-width:700px){.about-inner{grid-template-columns:1fr;gap:2.5rem}}
+.about-eyebrow{font-size:.63rem;letter-spacing:.25em;text-transform:uppercase;color:var(--clay);font-weight:700;margin-bottom:.7rem}
+.about-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--bark);line-height:1.2;margin-bottom:1.2rem;font-weight:400}
+.about-text{font-size:.88rem;color:var(--sub);line-height:1.95;font-weight:300}
+.about-text p+p{margin-top:.8rem}
+.vals{display:flex;flex-direction:column;gap:.85rem}
+.val{display:flex;align-items:flex-start;gap:.9rem;padding:1rem 1.1rem;background:var(--sand);border-radius:12px;border-left:3px solid var(--clay2)}
+.val-icon{font-size:1.35rem;flex-shrink:0;margin-top:.05rem}
+.val h4{font-size:.84rem;font-weight:700;color:var(--bark);margin-bottom:.18rem}
+.val p{font-size:.77rem;color:var(--sub);line-height:1.5}
+
+/* ═══ CATALOG ═══ */
+.cat-section{max-width:1100px;margin:0 auto;padding:3rem 1.8rem 5rem}
+.cat-header{text-align:center;margin-bottom:2.5rem}
+.cat-eyebrow{font-size:.63rem;letter-spacing:.25em;text-transform:uppercase;color:var(--clay);font-weight:700;margin-bottom:.6rem}
+.cat-title{font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--bark);font-weight:400}
+.filters{display:flex;gap:.55rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem}
+.fc{padding:.36rem 1.05rem;border-radius:18px;border:1.5px solid var(--sand3);background:var(--white);color:var(--sub);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:600;transition:all .2s}
+.fc:hover,.fc.on{background:var(--bark);color:var(--cream);border-color:var(--bark)}
+.cat-group-label{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--moss);margin:2.5rem 0 1.2rem;display:flex;align-items:center;gap:.8rem;font-weight:400}
+.cat-group-label::after{content:'';flex:1;height:1px;background:var(--sand2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:1.4rem}
+.card{background:var(--white);border-radius:16px;overflow:hidden;box-shadow:var(--sh);transition:transform .3s,box-shadow .3s;cursor:pointer;border:1px solid var(--border)}
+.card:hover{transform:translateY(-5px);box-shadow:var(--sh2)}
+.card-img-wrap{position:relative;overflow:hidden;height:215px}
+.card-img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.card:hover .card-img{transform:scale(1.06)}
+.card-ph{width:100%;height:100%;background:linear-gradient(135deg,var(--sand),var(--sand2));display:flex;align-items:center;justify-content:center;font-size:3.5rem}
+.card-cat{position:absolute;top:.75rem;left:.75rem;background:rgba(45,31,20,.72);color:var(--clay2);font-size:.57rem;letter-spacing:.14em;text-transform:uppercase;padding:.22rem .65rem;border-radius:8px;backdrop-filter:blur(6px);font-weight:600}
+.card-body{padding:1.2rem 1.3rem 1.4rem}
+.card-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--bark);margin-bottom:.28rem;line-height:1.3}
+.card-sub{font-size:.77rem;color:var(--muted);margin-bottom:.8rem;line-height:1.5;font-style:italic}
+.card-activos{font-size:.72rem;color:var(--moss);background:var(--moss-lite);border-radius:7px;padding:.38rem .65rem;margin-bottom:.85rem;line-height:1.5}
+.card-price{font-size:.93rem;font-weight:700;color:var(--gold);margin-bottom:.65rem}
+.card-cta{font-size:.72rem;color:var(--clay);font-weight:600;cursor:pointer;background:none;border:none;font-family:'Nunito',sans-serif;padding:0;transition:color .2s}
+.card-cta:hover{color:var(--bark)}
+
+/* ═══ CONTACT ═══ */
+.contact{background:var(--sand);border-top:1px solid var(--border);padding:3.5rem 1.8rem}
+.contact-inner{max-width:900px;margin:0 auto;text-align:center}
+.contact-title{font-family:'Cormorant Garamond',serif;font-size:2.3rem;color:var(--bark);margin-bottom:.6rem;font-weight:400}
+.contact-sub{font-size:.88rem;color:var(--sub);margin-bottom:2.2rem;line-height:1.85;font-weight:300;max-width:500px;margin-left:auto;margin-right:auto}
+.contact-chips{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.2rem}
+.chip{display:flex;align-items:center;gap:.6rem;background:var(--white);border:1px solid var(--border);border-radius:28px;padding:.58rem 1.2rem;font-size:.82rem;color:var(--text);text-decoration:none;transition:all .2s;box-shadow:var(--sh)}
+.chip:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.soc-row{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap}
+.sb{display:flex;align-items:center;gap:.5rem;padding:.52rem 1.25rem;border-radius:22px;font-family:'Nunito',sans-serif;font-size:.79rem;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:all .2s}
+.sb.wa{background:#25D366;color:#fff}.sb.wa:hover{background:#1fab54}
+.sb.ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#bc1888);color:#fff}
+.sb.fb{background:#1877F2;color:#fff}
+.sb.tt{background:#010101;color:#fff}
+.sb.cp{background:var(--bark);color:var(--cream)}.sb.cp:hover{background:var(--bark2)}
+.sb.dl{background:var(--gold);color:#fff}.sb.dl:hover{background:#a07030}
+
+/* ═══ CARRITO ═══ */
+.cart-badge{position:absolute;top:-8px;right:-8px;background:#b5422a;color:#fff;font-size:.6rem;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(18,8,3,.86);z-index:1001;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
+.cart-overlay.on{display:flex;animation:fadein .22s ease}
+.cart-modal{background:var(--cream);border-radius:20px;max-width:550px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.35);animation:slideup .28s ease;padding:0;position:relative}
+.cart-modal h2{font-family:'Cormorant Garamond',serif;color:var(--bark);font-size:1.8rem;margin:0;padding:2rem 2rem 1rem;border-bottom:1px solid var(--border)}
+.cart-close{position:absolute;top:1.5rem;right:1.5rem;background:var(--bark);border:none;color:var(--cream);width:34px;height:34px;border-radius:50%;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .2s}
+.cart-close:hover{background:var(--clay)}
+.cart-list{max-height:350px;overflow-y:auto;padding:1.5rem 2rem;margin:0}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:.8rem;background:var(--sand);border-radius:8px;margin-bottom:.6rem;font-size:.82rem}
+.cart-item>div:first-child{flex:1}
+.cart-item input{width:50px;padding:.3rem;border:1px solid var(--border);border-radius:4px;font-size:.8rem}
+.cart-item button{background:#b5422a;color:#fff;border:none;border-radius:4px;padding:.3rem .6rem;cursor:pointer;font-size:.7rem;margin-left:.4rem;flex-shrink:0}
+.cart-total{text-align:right;font-weight:700;color:var(--bark);margin:0;padding:1.5rem 2rem;background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:1.1rem}
+.cart-location{width:calc(100% - 4rem);padding:.8rem;border:1.5px solid var(--sand3);border-radius:8px;font-family:'Nunito',sans-serif;margin:1.5rem 2rem 1rem;font-size:.85rem}
+.cart-btns{display:flex;flex-direction:column;gap:.8rem;padding:0 2rem 2rem}
+.cart-btns button{padding:1rem;border:none;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:600;transition:all .2s;font-size:.9rem}
+.cart-btns button.primary{background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(58,107,59,.2)}
+.cart-btns button.primary:hover{background:var(--moss);transform:translateY(-2px)}
+.cart-btns button.secondary{background:var(--sand2);color:var(--bark)}
+.cart-btns button.secondary:hover{background:var(--sand3)}
+
+/* ═══ OFERTAS ═══ */
+.card-discount{position:absolute;top:.75rem;right:.75rem;background:#b5422a;color:#fff;font-size:.65rem;font-weight:700;padding:.35rem .65rem;border-radius:8px}
+.card-price-old{font-size:.75rem;color:var(--muted);text-decoration:line-through;margin-right:.4rem}
+
+/* ═══ ENTREGA ═══ */
+.card-delivery{position:absolute;bottom:1rem;left:1rem;font-size:.65rem;background:rgba(58,107,59,.9);color:#fff;padding:.25rem .5rem;border-radius:4px}
+
+/* ═══ COMENTARIOS ═══ */
+.reviews-section{background:var(--white);padding:3rem 1.8rem;border-top:1px solid var(--border)}
+.reviews-inner{max-width:1100px;margin:0 auto}
+.reviews-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--bark);font-weight:400;margin-bottom:1.5rem}
+.review-form{background:var(--sand);padding:1.5rem;border-radius:12px;margin-bottom:2rem}
+.review-form label{display:block;font-weight:600;color:var(--bark);margin-bottom:.4rem;font-size:.85rem}
+.review-form input,.review-form textarea{width:100%;padding:.7rem;font-family:'Nunito',sans-serif;border:1px solid var(--border);border-radius:8px;margin-bottom:.8rem;font-size:.85rem}
+.review-form button{padding:.6rem 1.5rem;background:var(--clay);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:600;transition:background .2s}
+.review-form button:hover{background:var(--bark)}
+.review-rating-slider{width:100%;margin:.6rem 0}
+.rating-label{display:flex;justify-content:space-between;align-items:center;font-weight:600;color:var(--bark)}
+.reviews-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
+.review-card{background:var(--sand);border-radius:12px;padding:1.5rem;border-left:3px solid var(--clay2)}
+.review-rating{display:flex;gap:.2rem;margin-bottom:.6rem;font-size:1rem;color:#ffc107}
+.review-name{font-weight:600;color:var(--bark);margin-bottom:.4rem;font-size:.9rem}
+.review-text{font-size:.82rem;color:var(--sub);line-height:1.6}
+.review-date{font-size:.7rem;color:var(--muted);margin-top:.5rem}
+
+/* ═══ FOOTER ═══ */
+.pub-footer{background:var(--bark);padding:2rem 1.8rem;text-align:center}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--cream);letter-spacing:.2em;font-weight:300;margin-bottom:.4rem}
+.footer-tagline{font-size:.7rem;color:rgba(245,239,230,.4);letter-spacing:.15em;text-transform:uppercase}
+
+/* ═══ MODAL ═══ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(18,8,3,.86);z-index:1000;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
+.overlay.on{display:flex;animation:fadein .22s ease}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal{background:var(--cream);border-radius:20px;max-width:720px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.35);animation:slideup .28s ease}
+@keyframes slideup{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:sticky;top:1rem;float:right;margin:1rem 1rem 0 0;background:var(--bark);border:none;color:var(--cream);width:34px;height:34px;border-radius:50%;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .2s}
+.modal-close:hover{background:var(--clay)}
+.modal-gallery{position:relative;height:268px;border-radius:20px 20px 0 0;overflow:hidden}
+.modal-gallery img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .38s}
+.modal-gallery img.on{opacity:1}
+.modal-gallery-ph{width:100%;height:200px;border-radius:20px 20px 0 0;background:linear-gradient(135deg,var(--sand),var(--sand2));display:flex;align-items:center;justify-content:center;font-size:4.5rem}
+.gdots{position:absolute;bottom:.65rem;left:0;right:0;display:flex;justify-content:center;gap:.4rem}
+.gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.42);cursor:pointer;transition:background .2s}.gdot.on{background:#fff}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.32);color:#fff;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.88rem}
+.gnav.prev{left:.55rem}.gnav.next{right:.55rem}
+.modal-body{padding:1.8rem 2rem 2.2rem}
+.modal-cat{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--clay);font-weight:700;margin-bottom:.45rem}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.95rem;color:var(--bark);margin-bottom:.3rem;font-weight:400}
+.modal-sub{font-size:.87rem;color:var(--muted);font-style:italic;margin-bottom:1.4rem}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:520px){.info-grid{grid-template-columns:1fr}}
+.ibox{border-radius:10px;padding:.85rem 1rem}
+.ibox.nat{background:var(--moss-lite);border-left:3px solid var(--moss2)}
+.ibox.warm{background:var(--sand);border-left:3px solid var(--sand3)}
+.ibox.gold{background:var(--gold-lite);border-left:3px solid var(--gold)}
+.ibox.full{grid-column:1/-1}
+.ibox-lbl{font-size:.59rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:.45rem}
+.ibox.nat .ibox-lbl{color:var(--moss)}.ibox.warm .ibox-lbl{color:var(--clay)}.ibox.gold .ibox-lbl{color:var(--gold)}
+.ibox-val{font-size:.83rem;line-height:1.75;color:var(--text)}
+.ibox-val ul{list-style:none;padding:0}.ibox-val ul li::before{content:'· ';color:var(--clay2)}
+
+/* ═══ LOCK ═══ */
+.lock{position:fixed;inset:0;background:var(--bark);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:1.3rem;padding:2rem}
+.lock-logo{font-family:'Cormorant Garamond',serif;font-size:2.7rem;color:var(--cream);letter-spacing:.2em;font-weight:300;text-align:center}
+.lock-sub{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--clay2)}
+.lock-input{padding:.78rem 1.5rem;border-radius:10px;border:1px solid rgba(196,133,106,.35);background:rgba(255,255,255,.08);color:var(--cream);font-size:.95rem;font-family:'Nunito',sans-serif;outline:none;width:270px;text-align:center;letter-spacing:.1em}
+.lock-input::placeholder{color:rgba(245,239,230,.28)}
+.lock-btn{padding:.72rem 2rem;background:var(--clay);color:var(--cream);border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;width:270px;transition:background .2s}
+.lock-btn:hover{background:var(--clay2)}
+.lock-err{font-size:.76rem;color:#ffaaaa;display:none}
+.lock-cancel{background:none;border:none;color:rgba(245,239,230,.32);font-size:.74rem;cursor:pointer;font-family:'Nunito',sans-serif}
+.lock-cancel:hover{color:rgba(245,239,230,.6)}
+
+/* ═══ ADMIN SHELL ═══ */
+#view-admin{background:#f2ede6;min-height:100vh;display:none}
+#view-admin.active{display:flex}
+.sidebar{width:232px;height:100vh;background:var(--bark);position:fixed;top:0;left:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto}
+.sb-brand{padding:1.5rem 1.4rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-name{font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:var(--cream);letter-spacing:.14em;font-weight:300}
+.sb-role{font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;color:var(--clay2);margin-top:.18rem}
+.sb-pill{margin:.7rem 1.2rem;background:rgba(196,133,106,.14);border:1px solid rgba(196,133,106,.2);border-radius:7px;padding:.38rem .8rem;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--clay2);text-align:center}
+.sb-sec{padding:.5rem 0}
+.sb-sec-lbl{font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.22);padding:.55rem 1.4rem .25rem;font-weight:600}
+.sb-btn{display:flex;align-items:center;gap:.65rem;padding:.68rem 1.4rem;color:rgba(255,255,255,.52);font-size:.81rem;cursor:pointer;transition:all .2s;border:none;background:none;width:100%;text-align:left;font-family:'Nunito',sans-serif;border-left:3px solid transparent}
+.sb-btn:hover{color:rgba(255,255,255,.88);background:rgba(255,255,255,.05)}
+.sb-btn.active{color:var(--cream);background:rgba(196,133,106,.17);border-left-color:var(--clay2)}
+.sb-ico{font-size:.92rem;width:17px;text-align:center;flex-shrink:0}
+.sb-footer{margin-top:auto;padding:.85rem 1.4rem;border-top:1px solid rgba(255,255,255,.07)}
+.sb-back{color:rgba(255,255,255,.38);font-size:.77rem;cursor:pointer;background:none;border:none;font-family:'Nunito',sans-serif;transition:color .2s;display:flex;align-items:center;gap:.5rem}
+.sb-back:hover{color:rgba(255,255,255,.78)}
+
+.amain{margin-left:232px;min-height:100vh;flex:1}
+.atopbar{background:var(--white);border-bottom:1px solid var(--border);padding:.85rem 1.8rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 1px 8px rgba(45,31,20,.05)}
+.atitle{font-size:.97rem;font-weight:700;color:var(--bark)}
+.asub{font-size:.73rem;color:var(--muted)}
+.acnt{padding:.26rem .8rem;border-radius:14px;font-size:.68rem;font-weight:700;background:var(--sand);color:var(--clay)}
+.acontent{padding:1.8rem}
+.panel{display:none}.panel.show{display:block;animation:panelIn .28s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* FORM COMPONENTS */
+.sec-h{font-family:'Cormorant Garamond',serif;font-size:1.65rem;color:var(--bark);margin-bottom:.3rem}
+.sec-p{font-size:.82rem;color:var(--sub);margin-bottom:1.6rem;line-height:1.72}
+.card{background:var(--white);border-radius:13px;padding:1.7rem;box-shadow:var(--sh);border:1px solid var(--border);margin-bottom:1.3rem}
+.card-h{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--clay);margin-bottom:1rem;display:flex;align-items:center;gap:.45rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.85rem}
+.row.three{grid-template-columns:1fr 1fr 1fr}
+.row.one{grid-template-columns:1fr}
+.fg{display:flex;flex-direction:column;gap:.28rem}
+.fg label{font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--clay)}
+.fg input,.fg select,.fg textarea{padding:.58rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-family:'Nunito',sans-serif;font-size:.85rem;color:var(--text);background:var(--white);outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--clay)}
+.fg textarea{resize:vertical;min-height:80px;line-height:1.65}
+.fg .note{font-size:.68rem;color:var(--muted);margin-top:.18rem;line-height:1.5}
+
+.photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:.65rem;margin-top:.45rem}
+.pslot{aspect-ratio:1;border-radius:9px;overflow:hidden;position:relative;cursor:pointer;border:2px dashed var(--sand3);background:var(--sand);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.28rem;transition:all .2s}
+.pslot:hover{border-color:var(--clay);background:var(--sand2)}
+.pslot.filled{border:none}
+.pslot img{width:100%;height:100%;object-fit:cover}
+.prm{position:absolute;top:4px;right:4px;background:rgba(45,31,20,.7);color:#fff;border:none;border-radius:50%;width:21px;height:21px;font-size:.62rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.p-ico{font-size:1.3rem;color:var(--sand3)}
+.p-lbl{font-size:.59rem;color:var(--muted);text-align:center;line-height:1.3}
+
+.bens{display:flex;flex-direction:column;gap:.42rem;margin-top:.38rem}
+.ben{display:flex;align-items:center;gap:.45rem}
+.ben input{flex:1;padding:.5rem .82rem;border:1.5px solid var(--border);border-radius:8px;font-family:'Nunito',sans-serif;font-size:.83rem;outline:none;transition:border-color .2s}
+.ben input:focus{border-color:var(--clay)}
+.ben button{width:26px;height:26px;border-radius:50%;border:none;cursor:pointer;background:var(--red-lite);color:var(--red);font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.ben button:hover{background:var(--red);color:#fff}
+.add-btn{padding:.35rem .85rem;border-radius:7px;border:1.5px dashed var(--sand3);background:none;color:var(--clay);font-size:.74rem;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:.38rem;transition:all .2s}
+.add-btn:hover{background:var(--sand)}
+
+.val-row{display:grid;grid-template-columns:44px 1fr 2.2fr 26px;gap:.55rem;align-items:center;margin-bottom:.55rem}
+.val-row input{padding:.48rem .78rem;border:1.5px solid var(--border);border-radius:8px;font-family:'Nunito',sans-serif;font-size:.84rem;outline:none;transition:border-color .2s;width:100%}
+.val-row input:first-child{font-size:1.15rem;text-align:center;padding:.48rem .3rem}
+.val-row input:focus{border-color:var(--clay)}
+.val-del{width:26px;height:26px;border-radius:50%;border:none;cursor:pointer;background:var(--red-lite);color:var(--red);font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.val-del:hover{background:var(--red);color:#fff}
+
+.ai-btn{width:100%;padding:.9rem;background:linear-gradient(135deg,var(--bark),var(--bark2));color:var(--cream);border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.86rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .25s;box-shadow:0 4px 18px rgba(45,31,20,.22);display:flex;align-items:center;justify-content:center;gap:.6rem}
+.ai-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(45,31,20,.3)}
+.ai-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.save{padding:.78rem 1.9rem;background:var(--moss);color:#fff;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(61,90,62,.22)}
+.save:hover{background:var(--moss2);transform:translateY(-1px)}
+.canc{padding:.78rem 1.35rem;background:var(--white);color:var(--sub);border:1.5px solid var(--border);border-radius:9px;font-family:'Nunito',sans-serif;font-size:.85rem;cursor:pointer;transition:all .2s;margin-right:.55rem}
+.canc:hover{border-color:var(--clay);color:var(--clay)}
+.plus{padding:.58rem 1.25rem;background:var(--bark);color:var(--cream);border:none;border-radius:7px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:background .2s}
+.plus:hover{background:var(--bark2)}
+
+.stbar{margin-top:.9rem;padding:.9rem 1.1rem;border-radius:9px;font-size:.82rem;display:none;align-items:center;gap:.65rem}
+.stbar.load{display:flex;background:var(--sand);color:var(--clay)}
+.stbar.ok{display:block;background:var(--green-lite);color:var(--green)}
+.stbar.err{display:block;background:var(--red-lite);color:var(--red)}
+.spin{width:14px;height:14px;border:2px solid var(--sand2);border-top-color:var(--clay);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.prod-list{display:flex;flex-direction:column;gap:.85rem}
+.prod-row{background:var(--white);border-radius:11px;padding:.9rem 1.05rem;display:flex;align-items:center;gap:.9rem;box-shadow:var(--sh);border:1px solid var(--border);transition:box-shadow .2s}
+.prod-row:hover{box-shadow:0 6px 28px rgba(45,31,20,.12)}
+.prod-thumb{width:58px;height:58px;border-radius:8px;object-fit:cover;flex-shrink:0}
+.prod-ph{width:58px;height:58px;border-radius:8px;background:linear-gradient(135deg,var(--sand),var(--sand2));display:flex;align-items:center;justify-content:center;font-size:1.65rem;flex-shrink:0}
+.prod-info{flex:1;min-width:0}
+.prod-name{font-weight:700;font-size:.88rem;color:var(--bark);margin-bottom:.18rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod-meta{font-size:.71rem;color:var(--muted)}
+.prod-tag{display:inline-block;padding:.14rem .52rem;border-radius:7px;background:var(--sand);color:var(--clay);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;font-weight:700;margin-right:.38rem}
+.acts{display:flex;gap:.45rem;flex-shrink:0}
+.abtn{padding:.36rem .78rem;border-radius:7px;font-size:.71rem;font-family:'Nunito',sans-serif;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.abtn.edit{background:var(--sand);color:var(--clay)}.abtn.edit:hover{background:var(--clay);color:#fff}
+.abtn.del{background:var(--red-lite);color:var(--red)}.abtn.del:hover{background:var(--red);color:#fff}
+.empty{text-align:center;padding:2.5rem;color:var(--muted);background:var(--white);border-radius:12px;border:1.5px dashed var(--border)}
+
+.ai-tips{background:linear-gradient(135deg,var(--bark),#3a2218);border-radius:11px;padding:1.3rem 1.5rem;color:var(--cream);margin-bottom:1.2rem}
+.ai-tips h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--clay2);margin-bottom:.65rem;font-weight:400}
+.tip-list{list-style:none}.tip-list li{font-size:.79rem;color:rgba(245,239,230,.78);display:flex;gap:.5rem;margin-bottom:.4rem}
+.tip-list li::before{content:'·';color:var(--clay2);font-size:1.1rem;line-height:1.25;flex-shrink:0}
+
+/* success toast */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--moss);color:#fff;padding:.8rem 1.4rem;border-radius:10px;font-size:.85rem;font-weight:600;z-index:9998;box-shadow:0 8px 30px rgba(0,0,0,.2);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:768px){.sidebar{width:0;overflow:hidden}.amain{margin-left:0}.row,.row.three{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     PUBLIC CATALOG
+═══════════════════════════════════ -->
+<div id="view-public" class="view active">
+
+  <header class="pub-header">
+    <div class="pub-header-inner">
+      <div>
+        <div class="hlogo" id="pubNombre">VIVINATUR</div>
+        <div class="hlogo-sub" id="pubTagline">Cosmética Natural · Artesanal</div>
+      </div>
+      <div class="hactions">
+        <a href="#reviews" class="hbtn ghost">Opiniones</a>
+        <a href="#contacto" class="hbtn ghost">Contacto</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge" id="pubBadge"></div>
+    <h1 class="hero-title" id="pubHeroTitle"></h1>
+    <p class="hero-sub" id="pubHeroSub"></p>
+    <div class="hero-pills" id="pubPills"></div>
+  </section>
+
+  <!-- QUIÉNES SOMOS -->
+  <section class="about" id="nosotras">
+    <div class="about-inner">
+      <div>
+        <div class="about-eyebrow" id="pubAboutLabel"></div>
+        <h2 class="about-title" id="pubAboutTitle"></h2>
+        <div class="about-text" id="pubAboutText"></div>
+      </div>
+      <div class="vals" id="pubVals"></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="cat-section">
+    <div class="cat-header">
+      <div class="cat-eyebrow">Lo que hacemos</div>
+      <div class="cat-title">Nuestros productos</div>
+    </div>
+    <div class="filters" id="pubFilters"></div>
+    <div id="pubGrid"></div>
+  </section>
+
+  <!-- OPINIONES -->
+  <section class="reviews-section" id="reviews">
+    <div class="reviews-inner">
+      <h2 class="reviews-title">Opiniones de Clientes</h2>
+      
+      <div class="review-form">
+        <h3 style="color:var(--bark);margin-bottom:1rem">Dejar una Opinión</h3>
+        <div style="margin-bottom:1rem">
+          <div class="rating-label">
+            <label>Calificación:</label>
+            <span id="revRatingLabel" style="color:var(--gold)">★★★★★</span>
+          </div>
+          <input type="range" id="revRating" min="1" max="5" value="5" class="review-rating-slider">
+        </div>
+        <label>Nombre:</label>
+        <input type="text" id="revName" placeholder="Tu nombre">
+        <label>Opinión:</label>
+        <textarea id="revText" placeholder="Comparte tu experiencia..." style="min-height:100px"></textarea>
+        <button onclick="saveReview()">Enviar Opinión</button>
+      </div>
+      
+      <div id="reviewsContainer"></div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contact" id="contacto">
+    <div class="contact-inner">
+      <h2 class="contact-title" id="pubContactTitle"></h2>
+      <p class="contact-sub" id="pubContactSub"></p>
+      <div class="contact-chips" id="pubChips"></div>
+      <div class="soc-row" id="pubSocial"></div>
+    </div>
+  </section>
+
+  <!-- OPCIONES -->
+  <section style="background:var(--white);border-top:1px solid var(--border);padding:2.5rem 1.8rem;text-align:center">
+    <div style="max-width:900px;margin:0 auto">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--bark);margin-bottom:1.5rem;font-weight:400">Opciones</h3>
+      <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
+        <button class="sb" style="background:var(--green);color:#fff" onclick="toggleCart()">🛒 Ver Carrito</button>
+        <button class="sb dl" onclick="downloadData()">💾 Descargar Datos</button>
+        <button class="sb cp" onclick="copyLink()">🔗 Compartir Catálogo</button>
+        <button class="sb" style="background:var(--clay);color:#fff" onclick="showLock()">⚙️ Panel Admin</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="pub-footer">
+    <div class="footer-logo" id="pubFooterNombre">VIVINATUR</div>
+    <div class="footer-tagline" id="pubFooterTagline"></div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════
+     LOCK SCREEN
+═══════════════════════════════════ -->
+<div class="lock" id="lockScreen" style="display:none">
+  <div class="lock-logo" id="lockNombre">VIVINATUR</div>
+  <div class="lock-sub">Panel de administración</div>
+  <div style="color:rgba(245,239,230,.6);font-size:.82rem;margin:.5rem 0 1rem;max-width:300px">
+    Ingresa la contraseña para acceder al panel de administración
+  </div>
+  <input class="lock-input" type="password" id="lockInput" placeholder="Contraseña"
+    onkeydown="if(event.key==='Enter')doLogin()">
+  <div class="lock-err" id="lockErr">Contraseña incorrecta</div>
+  <button class="lock-btn" onclick="doLogin()">Entrar al Panel Admin</button>
+  <button class="lock-cancel" onclick="hideLock()">Cancelar</button>
+</div>
+
+<!-- ═══════════════════════════════════
+     ADMIN PANEL
+═══════════════════════════════════ -->
+<div id="view-admin" class="view">
+  <nav class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-name" id="sbNombre">VIVINATUR</div>
+      <div class="sb-role">Panel de administración</div>
+    </div>
+    <div class="sb-pill">🔒 Solo para vos</div>
+
+    <div class="sb-sec">
+      <div class="sb-sec-lbl">Catálogo</div>
+      <button class="sb-btn" data-sec="lista" onclick="goSec('lista')"><span class="sb-ico">📦</span>Mis productos</button>
+      <button class="sb-btn" data-sec="nuevo" onclick="goSec('nuevo')"><span class="sb-ico">✏</span>Agregar / Editar</button>
+      <button class="sb-btn" data-sec="ia"    onclick="goSec('ia')"><span class="sb-ico">🤖</span>Generar con IA</button>
+    </div>
+
+    <div class="sb-sec">
+      <div class="sb-sec-lbl">Mi marca</div>
+      <button class="sb-btn" data-sec="marca"    onclick="goSec('marca')"><span class="sb-ico">🌿</span>Nuestra historia</button>
+      <button class="sb-btn" data-sec="contacto" onclick="goSec('contacto')"><span class="sb-ico">📬</span>Contacto y redes</button>
+    </div>
+
+    <div class="sb-footer">
+      <button class="sb-back" onclick="exitAdmin()">← Ver catálogo público</button>
+    </div>
+  </nav>
+
+  <div class="amain">
+    <div class="atopbar">
+      <div>
+        <div class="atitle" id="adminTitle">Mis Productos</div>
+        <div class="asub"  id="adminSub">Gestioná tu catálogo</div>
+      </div>
+      <span class="acnt" id="adminCnt"></span>
+    </div>
+
+    <div class="acontent">
+
+      <!-- ── LISTA ── -->
+      <div class="panel show" id="sec-lista">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem;flex-wrap:wrap;gap:.7rem">
+          <div>
+            <div class="sec-h">Catálogo actual</div>
+            <div class="sec-p" style="margin:0">Editá o eliminá cualquier producto.</div>
+          </div>
+          <button class="plus" onclick="goSec('nuevo')">+ Nuevo producto</button>
+        </div>
+        <div class="prod-list" id="prodList"></div>
+      </div>
+
+      <!-- ── NUEVO / EDITAR ── -->
+      <div class="panel" id="sec-nuevo">
+        <div class="sec-h" id="formH">Nuevo Producto</div>
+        <p class="sec-p">Podés subir hasta 5 fotos. La primera será la foto principal.</p>
+
+        <div class="card">
+          <div class="card-h">📷 Fotos del producto <span style="font-weight:400;color:var(--muted);letter-spacing:0;text-transform:none;font-size:.7rem">(hasta 5)</span></div>
+          <div class="photos-grid" id="fpGrid"></div>
+          <input type="file" id="fpInput" accept="image/*" multiple style="display:none" onchange="onFPick(event)">
+        </div>
+
+        <div class="card">
+          <div class="card-h">📝 Información básica</div>
+          <div class="row">
+            <div class="fg"><label>Nombre *</label><input id="fn" placeholder="Ej: Crema de Lavanda y Miel"></div>
+            <div class="fg"><label>Categoría *</label>
+              <select id="fc"><option value="">Seleccionar...</option>
+                <option>Cremas Faciales</option><option>Cremas Corporales</option>
+                <option>Cuidado Capilar</option><option>Tratamientos</option>
+                <option>Aceites</option><option>Sérum</option><option>Jabones</option><option>Otros</option>
+              </select>
+            </div>
+          </div>
+          <div class="row one"><div class="fg"><label>Subtítulo</label><input id="fst" placeholder="Ej: Hidratación profunda para piel sensible"></div></div>
+          <div class="row three">
+            <div class="fg"><label>Contenido</label><input id="fco" placeholder="100 ml · Pote"></div>
+            <div class="fg"><label>Precio</label><input id="fpr" placeholder="$3.500"></div>
+            <div class="fg"><label>Stock</label><input id="fsk" placeholder="Disponible"></div>
+          </div>
+          <div class="row three">
+            <div class="fg"><label>Descuento (%)</label><input id="fdesc" type="number" min="0" max="100" step="0.1" placeholder="0" value="0"></div>
+            <div class="fg"><label>Tiempo Entrega</label>
+              <select id="fent">
+                <option value="">Seleccionar...</option>
+                <option value="Inmediato">Inmediato (En Stock)</option>
+                <option value="Preventa">Preventa (5 días hábiles)</option>
+              </select>
+            </div>
+            <div class="fg"><label>¿Nuevo Lanzamiento?</label>
+              <select id="fnuevo">
+                <option value="no">No</option>
+                <option value="si">Sí (por 30 días)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">🌿 Activos e ingredientes</div>
+          <div class="fg"><label>Listado (separados por ·)</label>
+            <textarea id="fac" placeholder="Ej: Aceite de lavanda · Karité · Vitamina E · Miel natural"></textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">✦ Beneficios</div>
+          <div class="bens" id="bensEl"></div>
+          <button class="add-btn" onclick="addBen('')">+ Agregar beneficio</button>
+        </div>
+
+        <div class="card">
+          <div class="card-h">📋 Instrucciones y cuidados</div>
+          <div class="row one"><div class="fg"><label>Modo de uso</label><textarea id="fmu" placeholder="Aplicar sobre piel limpia con movimientos circulares..."></textarea></div></div>
+          <div class="row">
+            <div class="fg"><label>Precauciones</label><textarea id="fpc" placeholder="Solo uso externo. Evitar contacto con ojos..."></textarea></div>
+            <div class="fg"><label>Vencimiento</label><input id="fvc" placeholder="12 meses desde elaboración"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">📌 Notas adicionales</div>
+          <div class="fg"><label>Info extra</label><textarea id="fno" placeholder="Apta para veganos · Certificado orgánico..."></textarea></div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:flex-end;margin-top:.5rem">
+          <button class="canc" onclick="goSec('lista')">Cancelar</button>
+          <button class="save" onclick="saveProd()">💾 Guardar producto</button>
+        </div>
+      </div>
+
+      <!-- ── IA ── -->
+      <div class="panel" id="sec-ia">
+        <div class="sec-h">Generar con Inteligencia Artificial</div>
+        <p class="sec-p">Subí fotos del producto, completá los datos y la IA genera la ficha técnica completa.</p>
+        <div class="ai-tips">
+          <h3>Consejos para mejores resultados</h3>
+          <ul class="tip-list">
+            <li>Subí fotos donde se vea el producto y su etiqueta</li>
+            <li>Indicá el activo o ingrediente principal</li>
+            <li>Especificá tipo de piel o uso para mayor precisión</li>
+            <li>Revisá y editá la información antes de guardar</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h">📷 Fotos para análisis <span style="font-weight:400;color:var(--muted);letter-spacing:0;text-transform:none;font-size:.7rem">(hasta 4)</span></div>
+          <div class="photos-grid" id="iaGrid"></div>
+          <input type="file" id="iaInput" accept="image/*" multiple style="display:none" onchange="onIAPick(event)">
+        </div>
+        <div class="card">
+          <div class="card-h">📝 Datos del producto</div>
+          <div class="row">
+            <div class="fg"><label>Nombre *</label><input id="ian" placeholder="Ej: Crema de Lavanda y Árnica"></div>
+            <div class="fg"><label>Categoría *</label>
+              <select id="iac"><option value="">Seleccionar...</option>
+                <option>Cremas Faciales</option><option>Cremas Corporales</option>
+                <option>Cuidado Capilar</option><option>Tratamientos</option>
+                <option>Aceites</option><option>Sérum</option><option>Jabones</option><option>Otros</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="fg"><label>Activo principal</label><input id="iai" placeholder="lavanda, árnica, colágeno..."></div>
+            <div class="fg"><label>Tipo de piel / uso</label><input id="iau" placeholder="piel sensible, dolores musculares..."></div>
+          </div>
+          <div class="row">
+            <div class="fg"><label>Presentación</label><input id="iaco" placeholder="100 ml, pote, frasco vidrio..."></div>
+            <div class="fg"><label>Precio</label><input id="iapr" placeholder="$3.500"></div>
+          </div>
+          <div class="row one"><div class="fg"><label>Contexto extra para la IA</label><textarea id="iactx" rows="2" placeholder="Ej: 'es vegana', 'sin fragancia', 'contiene CBD'..."></textarea></div></div>
+        </div>
+        <button class="ai-btn" id="aiBtn" onclick="runIA()">🌿 Generar ficha completa con IA</button>
+        <div class="stbar" id="iaSt"><div class="spin"></div><span>Analizando y generando ficha técnica...</span></div>
+        <div id="iaRes" style="display:none;margin-top:1.3rem">
+          <div class="card" style="border:2px solid var(--clay2)">
+            <div class="card-h" style="color:var(--moss)">✓ Revisá y editá antes de guardar</div>
+            <div class="row"><div class="fg"><label>Subtítulo</label><input id="rsu"></div><div class="fg"><label>Activos principales</label><input id="rac"></div></div>
+            <div class="row one"><div class="fg"><label>Beneficios (uno por línea)</label><textarea id="rbe" rows="5"></textarea></div></div>
+            <div class="row"><div class="fg"><label>Modo de uso</label><textarea id="rmu"></textarea></div><div class="fg"><label>Precauciones</label><textarea id="rpc"></textarea></div></div>
+            <div class="row"><div class="fg"><label>Vencimiento</label><input id="rvc"></div><div class="fg"><label>Notas</label><input id="rno"></div></div>
+            <div style="display:flex;gap:.55rem;justify-content:flex-end;margin-top:.9rem">
+              <button class="canc" onclick="resetIA()">Descartar</button>
+              <button class="save" onclick="saveFromIA()">💾 Guardar al catálogo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MARCA / QUIÉNES SOMOS ── -->
+      <div class="panel" id="sec-marca">
+        <div class="sec-h">Nuestra historia &amp; marca</div>
+        <p class="sec-p">Todo lo que editás aquí se refleja instantáneamente en el catálogo público.</p>
+
+        <div class="card">
+          <div class="card-h">🏷 Nombre y lema de la marca</div>
+          <div class="row">
+            <div class="fg">
+              <label>Nombre de la marca</label>
+              <input id="mNombre" placeholder="VIVINATUR">
+            </div>
+            <div class="fg">
+              <label>Tagline / lema</label>
+              <input id="mTagline" placeholder="Cosmética Natural · Artesanal">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">🌟 Sección de inicio (Hero)</div>
+          <div class="row one">
+            <div class="fg">
+              <label>Frase decorativa pequeña</label>
+              <input id="mBadge" placeholder="Belleza que cuida · Ingredientes que nutren">
+            </div>
+          </div>
+          <div class="row one">
+            <div class="fg">
+              <label>Título principal</label>
+              <input id="mHeroTitle" placeholder="Cosmética [em]natural[/em] hecha con amor">
+              <div class="note">Usá [em]palabra[/em] para poner texto en cursiva y color. Ej: Cosmética [em]natural[/em] hecha con amor</div>
+            </div>
+          </div>
+          <div class="row one">
+            <div class="fg">
+              <label>Descripción bajo el título</label>
+              <textarea id="mHeroSub" rows="2" placeholder="Productos artesanales formulados con ingredientes puros..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">🌿 Nuestra historia</div>
+          <div class="row">
+            <div class="fg">
+              <label>Etiqueta de sección</label>
+              <input id="mAboutLabel" placeholder="Nuestra historia">
+            </div>
+            <div class="fg">
+              <label>Título de la sección</label>
+              <input id="mAboutTitle" placeholder="Porque tu piel merece lo mejor de la naturaleza">
+            </div>
+          </div>
+          <div class="row one">
+            <div class="fg">
+              <label>Texto completo — contá tu historia aquí</label>
+              <textarea id="mAboutText" rows="8" placeholder="Escribí aquí la historia de tu marca...
+
+Separás los párrafos dejando una línea en blanco entre cada uno."></textarea>
+              <div class="note">Separá los párrafos con una línea en blanco entre cada uno. Aparecerán como párrafos separados en el catálogo.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">✦ Valores / propiedades destacadas <span style="font-weight:400;color:var(--muted);letter-spacing:0;text-transform:none;font-size:.7rem">(hasta 4 · aparecen como tarjetas y pills)</span></div>
+          <div id="valsEditor"></div>
+          <button class="add-btn" onclick="addVal()">+ Agregar valor</button>
+        </div>
+
+        <div class="card">
+          <div class="card-h">🦶 Pie de página</div>
+          <div class="row one">
+            <div class="fg">
+              <label>Texto del footer</label>
+              <input id="mFooter" placeholder="Cosmética Natural · Hecho con amor">
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;margin-top:.5rem">
+          <button class="save" onclick="saveMarca()">💾 Guardar y ver en el catálogo</button>
+        </div>
+      </div>
+
+      <!-- ── CONTACTO ── -->
+      <div class="panel" id="sec-contacto">
+        <div class="sec-h">Contacto y redes sociales</div>
+        <p class="sec-p">Esta información aparece en la sección de contacto. Todo se refleja al instante al guardar.</p>
+
+        <div class="card">
+          <div class="card-h">📬 Textos de la sección</div>
+          <div class="row">
+            <div class="fg"><label>Título</label><input id="cTitulo" placeholder="¿Hablamos?"></div>
+            <div class="fg"><label>Descripción</label><input id="cSub" placeholder="Estamos para ayudarte a encontrar el producto ideal."></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">📞 Datos de contacto</div>
+          <div class="row">
+            <div class="fg">
+              <label>WhatsApp (con código de país)</label>
+              <input id="cWA" placeholder="5491112345678">
+              <div class="note">Sin el + ni espacios. Ej: 5491112345678 (Argentina 54 + código área + número)</div>
+            </div>
+            <div class="fg">
+              <label>Teléfono visible en el catálogo</label>
+              <input id="cTel" placeholder="011 1234-5678">
+              <div class="note">Cómo querés que aparezca el número para tus clientes</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="fg"><label>Email</label><input id="cEmail" placeholder="vivinatur@gmail.com"></div>
+            <div class="fg"><label>Ciudad / ubicación</label><input id="cCiudad" placeholder="Buenos Aires, Argentina"></div>
+          </div>
+          <div class="row one">
+            <div class="fg">
+              <label>Mensaje predeterminado de WhatsApp</label>
+              <input id="cWAMsg" placeholder="Hola! Vi tu catálogo y me interesa saber más 💜">
+              <div class="note">Este texto aparece automáticamente cuando alguien te escribe por WhatsApp desde el catálogo</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">📱 Redes sociales</div>
+          <div class="row">
+            <div class="fg">
+              <label>Instagram (solo el usuario, sin @)</label>
+              <input id="cIG" placeholder="vivinatur">
+            </div>
+            <div class="fg">
+              <label>Facebook (usuario o nombre de página)</label>
+              <input id="cFB" placeholder="vivinatur.oficial">
+            </div>
+          </div>
+          <div class="row">
+            <div class="fg">
+              <label>TikTok (solo el usuario, sin @)</label>
+              <input id="cTT" placeholder="vivinatur">
+            </div>
+            <div class="fg"><!-- espacio vacío --></div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;margin-top:.5rem">
+          <button class="save" onclick="saveContacto()">💾 Guardar y ver en el catálogo</button>
+        </div>
+      </div>
+
+    </div><!-- /acontent -->
+  </div><!-- /amain -->
+</div><!-- /view-admin -->
+
+<!-- MODAL -->
+<div class="cart-overlay" id="cartOverlay">
+  <div class="cart-modal">
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+    <h2>🛒 Carrito de Compras</h2>
+    <div class="cart-list" id="cartList"></div>
+    <div class="cart-total">
+      Total: $<span id="cartTotal">0.00</span>
+    </div>
+    <input type="text" id="cartUbicacion" class="cart-location" placeholder="¿Dónde debo enviar? (Opcional)">
+    <div class="cart-btns">
+      <button class="primary" onclick="finalizarCompra()">💬 Completar Compra por WhatsApp</button>
+      <button class="secondary" onclick="toggleCart()">Seguir Comprando</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════
+//  DATOS INICIALES — editá directamente aquí si querés
+// ════════════════════════════════════════════════════
+
+const PASS = 'vivinatur2025';
+
+// Datos de MARCA — se pueden editar desde el admin
+const MARCA_DEFAULT = {
+  nombre:      'VIVINATUR',
+  tagline:     'Cosmética Natural · Artesanal',
+  badge:       'Belleza que cuida · Ingredientes que nutren',
+  hero_title:  'Cosmética [em]natural[/em] hecha con amor',
+  hero_sub:    'Productos artesanales formulados con ingredientes puros. Sin parabenos, sin sulfatos, sin crueldad animal.',
+  about_label: 'Nuestra historia',
+  about_title: 'Porque tu piel merece lo mejor de la naturaleza',
+  about_text:  'Nacimos del amor por los ingredientes puros y la convicción de que no hace falta una larga lista de químicos para cuidar la piel. Cada producto Vivinatur es formulado con dedicación, en pequeños lotes artesanales.\n\nCreemos en una belleza consciente, que respeta el cuerpo y el planeta. Por eso usamos solo lo que la naturaleza nos da, sin tóxicos, sin crueldad animal, con transparencia total en cada ingrediente.',
+  footer:      'Cosmética Natural · Hecho con amor',
+  valores: [
+    { icon: '🌱', titulo: '100% Natural',  texto: 'Ingredientes de origen natural, seleccionados por su calidad.' },
+    { icon: '🤲', titulo: 'Artesanal',     texto: 'Cada producto elaborado a mano, en pequeños lotes.' },
+    { icon: '🐇', titulo: 'Sin crueldad',  texto: 'Nunca testamos en animales. Belleza ética y consciente.' },
+    { icon: '🚫', titulo: 'Sin tóxicos',   texto: 'Sin parabenos, sin sulfatos, sin colorantes artificiales.' }
+  ]
+};
+
+// Datos de CONTACTO — se pueden editar desde el admin
+const CONTACTO_DEFAULT = {
+  titulo:  '¿Hablamos?',
+  sub:     'Estamos para responder tus consultas y ayudarte a encontrar el producto ideal para vos.',
+  wa:      '',
+  tel:     '',
+  email:   '',
+  ciudad:  '',
+  wa_msg:  'Hola! Vi tu catálogo y me interesa saber más 💜',
+  ig:      '',
+  fb:      '',
+  tt:      ''
+};
+
+// ════════════════════════════════════════════════════
+//  VARIABLES GLOBALES
+// ════════════════════════════════════════════════════
+let cart = [];
+let reviews = [];
+
+// ════════════════════════════════════════════════════
+//  PRODUCTOS POR DEFECTO
+// ════════════════════════════════════════════════════
+const PRODS_DEFAULT = [
+  {id:1,nombre:"Crema Nutritiva para Manos",categoria:"Cremas Faciales",subtitulo:"Hidratación profunda y reparadora",emoji:"🌸",activos:"Manteca de karité · Aceite de almendras dulces · Vitamina E · Cera de abejas",beneficios:["Nutre y repara la piel seca y agrietada","Crea una barrera protectora natural","Suaviza y devuelve elasticidad","Absorción rápida, sin residuo graso"],modo_uso:"Aplicar una pequeña cantidad sobre las manos limpias y masajear en movimientos circulares. Usar 2 a 3 veces al día.",precauciones:"Solo uso externo. Evitar el contacto con los ojos. Conservar en lugar fresco y seco.",vencimiento:"12 meses desde su elaboración.",contenido:"100 ml · Crema en pote",photos:[]},
+  {id:2,nombre:"Crema de Cúrcuma, Miel y Limón",categoria:"Cremas Faciales",subtitulo:"Aclara manchas y unifica el tono",emoji:"✨",activos:"Cúrcuma · Miel natural · Jugo de limón · Aceite de coco · Vitamina C",beneficios:["Aclara manchas y marcas de acné","Unifica el tono de la piel","Acción antioxidante y antiinflamatoria","Aporta luminosidad natural"],modo_uso:"Aplicar por las noches sobre la piel limpia y seca. No exponerse al sol inmediatamente después.",precauciones:"Solo uso externo. Realizar prueba de parche previamente.",vencimiento:"12 meses desde su elaboración.",contenido:"100 ml · Crema en pote",photos:[]},
+  {id:3,nombre:"Crema Anti-Aging",categoria:"Cremas Faciales",subtitulo:"Ácido hialurónico y vitaminas A y E",emoji:"💎",activos:"Ácido hialurónico · Vitamina A · Vitamina E · Rosa mosqueta · Colágeno vegetal",beneficios:["Reduce líneas de expresión y arrugas","Hidratación profunda y duradera","Mejora firmeza y elasticidad","Ilumina y rejuvenece"],modo_uso:"Aplicar mañana y/o noche sobre rostro, cuello y escote. Usar protector solar de día.",precauciones:"Solo uso externo. La Vitamina A aumenta la fotosensibilidad.",vencimiento:"12 meses desde su elaboración.",contenido:"100 ml · Crema en pote",photos:[]},
+  {id:4,nombre:"Crema Calmante Aloe, Cera y Romero",categoria:"Tratamientos",subtitulo:"Para irritaciones, picazón y psoriasis",emoji:"🌿",activos:"Aloe Vera · Cera de abejas · Aceite de romero · Caléndula · Árbol de té",beneficios:["Calma irritaciones y enrojecimiento","Alivia psoriasis y eccema","Regenera la piel dañada","Acción antiinflamatoria"],modo_uso:"Aplicar sobre la zona afectada limpia y seca. Masajear 2 a 3 veces al día.",precauciones:"Solo uso externo. Si persiste consultar dermatólogo.",vencimiento:"12 meses desde su elaboración.",contenido:"100 ml · Crema en pote",photos:[]},
+  {id:5,nombre:"Crema Calmante de Aloe Vera",categoria:"Cremas Corporales",subtitulo:"Calma, regenera y devuelve la suavidad",emoji:"🍃",activos:"Aloe Barbadensis · Aceite de almendras · Cera alba · Glicerina · Vitamina E",beneficios:["Calma y refresca piel sensible","Regenera la piel dañada","Devuelve suavidad","Absorción inmediata"],modo_uso:"Aplicar sobre piel limpia y seca con movimientos circulares.",precauciones:"Solo uso externo. Evitar contacto con ojos.",vencimiento:"12 meses desde su elaboración.",contenido:"100 ml · Crema en pote",photos:[]},
+  {id:6,nombre:"Crema de Cannabis y Eucalipto",categoria:"Cremas Corporales",subtitulo:"Alivio natural para tu cuerpo",emoji:"🌲",activos:"Aceite de cáñamo · Aceite de eucalipto · Karité · Árnica · Mentol natural",beneficios:["Alivia dolores musculares y articulares","Efecto antiinflamatorio","Relaja musculatura post ejercicio","Aroma fresco y revitalizante"],modo_uso:"Aplicar en la zona a tratar con masaje suave. 2 a 3 veces al día.",precauciones:"Solo uso externo. No apto para menores de 2 años.",vencimiento:"12 meses desde su elaboración.",contenido:"100 ml · Crema en pote",photos:[]},
+  {id:7,nombre:"Crema Corporal con Aloe Vera",categoria:"Cremas Corporales",subtitulo:"Hipoalergénica · Ideal para toda la familia",emoji:"💧",activos:"Aloe Vera · Aceite de almendras · Aceite de coco · Cera alba · Vitamina E",beneficios:["Hidratación profunda y duradera","Textura ligera sin residuo graso","Hipoalergénica para toda la familia","Apta para pieles sensibles"],modo_uso:"Aplicar sobre la piel limpia y seca con suaves masajes.",precauciones:"Conservar lejos de la luz solar directa.",vencimiento:"12 meses desde su elaboración.",contenido:"250 ml · Frasco con dosificador",photos:[]},
+  {id:8,nombre:"Tratamiento Capilar",categoria:"Cuidado Capilar",subtitulo:"Estimula el crecimiento y fortalece",emoji:"💆",activos:"Aceite de ricino · Aceite de romero · Aceite de argán · Ortigas · Vitamina E",beneficios:["Estimula el crecimiento del cabello","Fortalece la fibra capilar","Calma el cuero cabelludo","Combate la caspa"],modo_uso:"Aplicar 15 gotas sobre el cuero cabelludo limpio. No enjuagar. 1 o 2 veces al día.",precauciones:"Solo uso externo. Evitar contacto con ojos.",vencimiento:"12 meses desde su elaboración.",contenido:"30 ml · Frasco de vidrio",photos:[]}
+];
+
+// ════════════════════════════════════════════════════
+//  ESTADO DE LA APP
+// ════════════════════════════════════════════════════
+function lsGet(k, def) {
+  try { return JSON.parse(localStorage.getItem(k) || 'null') || def; } catch { return def; }
+}
+function lsSet(k, v) {
+  try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) { console.warn('localStorage no disponible, los cambios no persisten entre sesiones'); }
+}
+
+let marca    = lsGet('vv_marca',    MARCA_DEFAULT);
+let contacto = lsGet('vv_contacto', CONTACTO_DEFAULT);
+let products = lsGet('vv_products', PRODS_DEFAULT);
+
+let editingId  = null;
+let fpPhotos   = [];
+let iaPhotos   = [];
+let bensData   = [''];
+let valsData   = [];
+let galIdx     = 0;
+let activeFilter = 'all';
+
+// ════════════════════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════════════════════
+function x(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function heroHTML(t){ return (t||'').replace(/\[em\](.*?)\[\/em\]/g,'<em>$1</em>'); }
+function catEmoji(c){ return {'Cremas Faciales':'🌸','Cremas Corporales':'💧','Cuidado Capilar':'💆','Tratamientos':'🌿','Aceites':'✨','Sérum':'💎','Jabones':'🫧','Otros':'🌱'}[c]||'🌱'; }
+function mainImg(p){ return (p.photos&&p.photos.length) ? p.photos[0] : (p.imgBase64||null); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ════════════════════════════════════════════════════
+//  RENDER PUBLIC VIEW
+// ════════════════════════════════════════════════════
+function renderPublic() {
+  const n = marca.nombre || 'VIVINATUR';
+
+  // Header + Lock + Admin sidebar
+  document.getElementById('pubNombre').textContent    = n;
+  document.getElementById('pubTagline').textContent   = marca.tagline || '';
+  document.getElementById('lockNombre').textContent   = n;
+  document.getElementById('sbNombre').textContent     = n;
+  document.getElementById('pubFooterNombre').textContent = n;
+  document.getElementById('pubFooterTagline').textContent = marca.footer || '';
+  document.title = n + ' — Catálogo Natural';
+
+  // Hero
+  document.getElementById('pubBadge').textContent = marca.badge || '';
+  document.getElementById('pubHeroTitle').innerHTML = heroHTML(marca.hero_title || '');
+  document.getElementById('pubHeroSub').textContent = marca.hero_sub || '';
+  document.getElementById('pubPills').innerHTML = (marca.valores||[])
+    .map(v => `<span class="pill">${x(v.icon)} ${x(v.titulo)}</span>`).join('');
+
+  // About / Historia
+  document.getElementById('pubAboutLabel').textContent = marca.about_label || '';
+  document.getElementById('pubAboutTitle').textContent = marca.about_title || '';
+  document.getElementById('pubAboutText').innerHTML = (marca.about_text||'')
+    .split(/\n\n+/).filter(Boolean).map(p => `<p>${x(p)}</p>`).join('');
+  document.getElementById('pubVals').innerHTML = (marca.valores||[]).map(v => `
+    <div class="val">
+      <div class="val-icon">${x(v.icon)}</div>
+      <div><h4>${x(v.titulo)}</h4><p>${x(v.texto)}</p></div>
+    </div>`).join('');
+
+  // Contacto
+  const ct = contacto;
+  document.getElementById('pubContactTitle').textContent = ct.titulo || '¿Hablamos?';
+  document.getElementById('pubContactSub').textContent   = ct.sub    || '';
+  const waUrl = ct.wa ? `https://wa.me/${ct.wa}?text=${encodeURIComponent(ct.wa_msg||'')}` : null;
+  const chips = [];
+  if (waUrl)     chips.push(`<a class="chip" href="${waUrl}" target="_blank">💬 ${x(ct.tel || 'WhatsApp')}</a>`);
+  else if(ct.tel) chips.push(`<span class="chip">📞 ${x(ct.tel)}</span>`);
+  if (ct.email)  chips.push(`<a class="chip" href="mailto:${x(ct.email)}">✉️ ${x(ct.email)}</a>`);
+  if (ct.ciudad) chips.push(`<span class="chip">📍 ${x(ct.ciudad)}</span>`);
+  document.getElementById('pubChips').innerHTML = chips.join('');
+  const soc = [];
+  if (waUrl)  soc.push(`<a class="sb wa" href="${waUrl}" target="_blank">💬 WhatsApp</a>`);
+  if (ct.ig)  soc.push(`<a class="sb ig" href="https://instagram.com/${x(ct.ig)}" target="_blank">📷 Instagram</a>`);
+  if (ct.fb)  soc.push(`<a class="sb fb" href="https://facebook.com/${x(ct.fb)}" target="_blank">👍 Facebook</a>`);
+  if (ct.tt)  soc.push(`<a class="sb tt" href="https://tiktok.com/@${x(ct.tt)}" target="_blank">🎵 TikTok</a>`);
+  soc.push(`<button class="sb cp" onclick="copyLink()">🔗 Compartir catálogo</button>`);
+  soc.push(`<button class="sb dl" onclick="downloadData()">💾 Descargar Datos</button>`);
+  document.getElementById('pubSocial').innerHTML = soc.join('');
+
+  buildFilters();
+  renderGrid();
+}
+
+function buildFilters() {
+  const ahora = new Date().getTime();
+  const treintaDias = 30 * 24 * 60 * 60 * 1000;
+  
+  const cats = ['all', ...new Set(products.map(p => p.categoria))];
+  
+  const hasNuevos = products.some(p => p.nuevo && (ahora - p.fechaNuevo < treintaDias));
+  const hasDescuentos = products.some(p => (p.descuento || 0) > 0);
+  
+  if (hasNuevos) cats.push('nuevos');
+  if (hasDescuentos) cats.push('descuentos');
+  
+  const w = document.getElementById('pubFilters');
+  w.innerHTML = '';
+  cats.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'fc' + (c === activeFilter ? ' on' : '');
+    if (c === 'all') b.textContent = 'Todos';
+    else if (c === 'nuevos') b.textContent = '🆕 Nuevos';
+    else if (c === 'descuentos') b.textContent = '🏷️ Descuentos';
+    else b.textContent = c;
+    
+    b.onclick = () => { activeFilter = c; buildFilters(); renderGrid(); };
+    w.appendChild(b);
+  });
+}
+
+function renderGrid() {
+  const ahora = new Date().getTime();
+  const treintaDias = 30 * 24 * 60 * 60 * 1000;
+  
+  const wrap = document.getElementById('pubGrid');
+  let list = products;
+  
+  if (activeFilter === 'nuevos') {
+    list = products.filter(p => p.nuevo && (ahora - p.fechaNuevo < treintaDias));
+  } else if (activeFilter === 'descuentos') {
+    list = products.filter(p => (p.descuento || 0) > 0);
+  } else if (activeFilter !== 'all') {
+    list = products.filter(p => p.categoria === activeFilter);
+  }
+  
+  if (!list.length) { wrap.innerHTML = '<div style="text-align:center;padding:4rem;color:var(--muted)">Sin productos en esta categoría.</div>'; return; }
+  const groups = {};
+  list.forEach(p => { (groups[p.categoria] = groups[p.categoria]||[]).push(p); });
+  wrap.innerHTML = Object.entries(groups).map(([cat, prods]) => `
+    <div class="cat-group-label">${x(cat)}</div>
+    <div class="grid">
+      ${prods.map((p, i) => {
+        const descuento = parseFloat(p.descuento) || 0;
+        const precioFinal = descuento > 0 ? (parseFloat(p.precio) * (1 - descuento/100)).toFixed(2) : p.precio;
+        return `
+        <div class="card" style="animation-delay:${i*.06}s">
+          <div class="card-img-wrap">
+            ${mainImg(p) ? `<img class="card-img" src="${mainImg(p)}" alt="${x(p.nombre)}" loading="lazy">` : `<div class="card-ph">${p.emoji||'🌱'}</div>`}
+            <div class="card-cat">${x(p.categoria)}</div>
+            ${descuento > 0 ? `<div class="card-discount">-${descuento.toFixed(0)}%</div>` : ''}
+            ${p.entrega ? `<div class="card-delivery">${p.entrega}</div>` : ''}
+          </div>
+          <div class="card-body">
+            <div class="card-name">${x(p.nombre)}</div>
+            <div class="card-sub">${x(p.subtitulo||'')}</div>
+            <div class="card-activos">🌿 ${x((p.activos||'').split('·').slice(0,3).join(' · '))}</div>
+            ${p.precio ? `<div class="card-price">${descuento > 0 ? `<span class="card-price-old">$${x(p.precio)}</span>` : ''}$${precioFinal}</div>` : ''}
+            <div style="display:flex;gap:.5rem">
+              <button class="card-cta" onclick="openModal(${p.id})" style="flex:1">Ver ficha →</button>
+              <button class="card-cta" onclick="addToCart(${p.id},'${p.nombre.replace(/'/g,"\\'")}','${precioFinal}','${p.contenido||''}'); event.stopPropagation();" style="flex:0.5;background:var(--clay);color:#fff;padding:.5rem">🛒</button>
+            </div>
+          </div>
+        </div>`
+      }).join('')}
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════════
+//  MODAL
+// ════════════════════════════════════════════════════
+function openModal(id) {
+  const p = products.find(q => q.id === id); if (!p) return;
+  const imgs = (p.photos&&p.photos.length) ? p.photos : (p.imgBase64 ? [p.imgBase64] : []);
+  let imgH = '';
+  if (imgs.length > 1) {
+    imgH = `<div class="modal-gallery" id="mg">
+      ${imgs.map((s,i) => `<img src="${s}" class="${i===0?'on':''}" alt="">`).join('')}
+      <div class="gdots">${imgs.map((_,i) => `<div class="gdot${i===0?' on':''}" onclick="gGo(${i})"></div>`).join('')}</div>
+      <button class="gnav prev" onclick="gPrev(event)">‹</button>
+      <button class="gnav next" onclick="gNext(event)">›</button>
+    </div>`;
+  } else if (imgs.length === 1) {
+    imgH = `<img style="width:100%;height:268px;object-fit:cover;border-radius:20px 20px 0 0;display:block" src="${imgs[0]}" alt="">`;
+  } else {
+    imgH = `<div class="modal-gallery-ph">${p.emoji||'🌱'}</div>`;
+  }
+  const bens = (p.beneficios||[]).map(b => `<li>${x(b)}</li>`).join('');
+  document.getElementById('modalBody').innerHTML = `${imgH}
+    <div class="modal-body">
+      <div class="modal-cat">${x(p.categoria)}</div>
+      <div class="modal-title">${x(p.nombre)}</div>
+      <div class="modal-sub">${x(p.subtitulo||'')}</div>
+      <div class="info-grid">
+        <div class="ibox nat full"><div class="ibox-lbl">✦ Activos Principales</div><div class="ibox-val">${x(p.activos||'—')}</div></div>
+        <div class="ibox warm full"><div class="ibox-lbl">✦ Beneficios</div><div class="ibox-val"><ul>${bens}</ul></div></div>
+        <div class="ibox nat"><div class="ibox-lbl">🌿 Modo de Uso</div><div class="ibox-val">${x(p.modo_uso||'—')}</div></div>
+        <div class="ibox gold"><div class="ibox-lbl">⚠ Precauciones</div><div class="ibox-val">${x(p.precauciones||'—')}</div></div>
+        <div class="ibox warm"><div class="ibox-lbl">📅 Vencimiento</div><div class="ibox-val">${x(p.vencimiento||'—')}</div></div>
+        <div class="ibox warm"><div class="ibox-lbl">📦 Contenido</div><div class="ibox-val">${x(p.contenido||'—')}</div></div>
+        ${p.precio ? `<div class="ibox gold full"><div class="ibox-lbl">💰 Precio</div><div class="ibox-val" style="font-size:1rem;font-weight:700;color:var(--gold)">${x(p.precio)}</div></div>` : ''}
+        ${p.notas  ? `<div class="ibox nat full"><div class="ibox-lbl">📌 Notas</div><div class="ibox-val">${x(p.notas)}</div></div>` : ''}
+      </div>
+    </div>`;
+  galIdx = 0;
+  document.getElementById('overlay').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() { document.getElementById('overlay').classList.remove('on'); document.body.style.overflow = ''; }
+function gGo(i) {
+  const g = document.getElementById('mg'); if (!g) return;
+  g.querySelectorAll('img').forEach((im,j) => im.classList.toggle('on', j===i));
+  g.querySelectorAll('.gdot').forEach((d,j) => d.classList.toggle('on', j===i));
+  galIdx = i;
+}
+function gNext(e) { if(e) e.stopPropagation(); const g=document.getElementById('mg'); if(!g) return; gGo((galIdx+1) % g.querySelectorAll('img').length); }
+function gPrev(e) { if(e) e.stopPropagation(); const g=document.getElementById('mg'); if(!g) return; const n=g.querySelectorAll('img').length; gGo((galIdx-1+n)%n); }
+
+// ════════════════════════════════════════════════════
+//  LOCK / ADMIN NAV
+// ════════════════════════════════════════════════════
+function showLock() {
+  document.getElementById('lockScreen').style.display = 'flex';
+  document.getElementById('lockInput').value = '';
+  document.getElementById('lockErr').style.display = 'none';
+  setTimeout(() => document.getElementById('lockInput').focus(), 100);
+}
+function hideLock() { document.getElementById('lockScreen').style.display = 'none'; }
+function doLogin() {
+  if (document.getElementById('lockInput').value === PASS) {
+    hideLock();
+    document.getElementById('view-public').classList.remove('active');
+    document.getElementById('view-admin').classList.add('active');
+    goSec('lista');
+  } else {
+    document.getElementById('lockErr').style.display = 'block';
+    document.getElementById('lockInput').value = '';
+    document.getElementById('lockInput').focus();
+  }
+}
+function exitAdmin() {
+  document.getElementById('view-admin').classList.remove('active');
+  document.getElementById('view-public').classList.add('active');
+  renderPublic();
+}
+
+const SEC_INFO = {
+  lista:    { t:'Mis Productos',              s:'Gestioná y editá tu catálogo' },
+  nuevo:    { t:'Agregar / Editar Producto',  s:'Completá todos los campos' },
+  ia:       { t:'Generar con IA',             s:'La IA completa la ficha automáticamente' },
+  marca:    { t:'Nuestra Historia &amp; Marca', s:'Editá los textos del catálogo' },
+  contacto: { t:'Contacto y Redes Sociales',  s:'Cómo te contactan tus clientes' }
+};
+
+function goSec(sec) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('sec-' + sec);
+  if (el) el.classList.add('show');
+  document.querySelectorAll('.sb-btn').forEach(b => {
+    if ((b.getAttribute('onclick')||'').includes("'"+sec+"'")) b.classList.add('active');
+  });
+  document.getElementById('adminTitle').innerHTML = SEC_INFO[sec]?.t || '';
+  document.getElementById('adminSub').textContent  = SEC_INFO[sec]?.s || '';
+
+  if (sec === 'lista')    renderList();
+  if (sec === 'nuevo' && !editingId) resetForm();
+  if (sec === 'ia')       { resetIA(); renderIAGrid(); }
+  if (sec === 'marca')    loadMarcaForm();
+  if (sec === 'contacto') loadContactoForm();
+}
+
+// ════════════════════════════════════════════════════
+//  PRODUCTS — LISTA
+// ════════════════════════════════════════════════════
+function renderList() {
+  document.getElementById('adminCnt').textContent = products.length + ' productos';
+  const el = document.getElementById('prodList');
+  if (!products.length) {
+    el.innerHTML = '<div class="empty"><div style="font-size:2rem;margin-bottom:.5rem">🌱</div><b>Aún no hay productos</b></div>';
+    return;
+  }
+  el.innerHTML = products.map(p => `
+    <div class="prod-row">
+      ${mainImg(p) ? `<img class="prod-thumb" src="${mainImg(p)}" alt="">` : `<div class="prod-ph">${p.emoji||'🌱'}</div>`}
+      <div class="prod-info">
+        <div class="prod-name">${x(p.nombre)}</div>
+        <div class="prod-meta"><span class="prod-tag">${x(p.categoria)}</span>${x(p.contenido||'')}${p.precio?' · <b>'+x(p.precio)+'</b>':''}</div>
+      </div>
+      <div class="acts">
+        <button class="abtn edit" onclick="editProd(${p.id})">✏ Editar</button>
+        <button class="abtn del"  onclick="delProd(${p.id})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+function delProd(id) {
+  if (!confirm('¿Eliminar este producto?')) return;
+  products = products.filter(p => p.id !== id);
+  lsSet('vv_products', products);
+  renderList();
+}
+
+// ════════════════════════════════════════════════════
+//  PRODUCTS — FORM
+// ════════════════════════════════════════════════════
+function renderFPGrid() {
+  const g = document.getElementById('fpGrid');
+  g.innerHTML = fpPhotos.map((s,i) => `
+    <div class="pslot filled"><img src="${s}" alt=""><button class="prm" onclick="rmFP(${i})">✕</button></div>
+  `).join('');
+  if (fpPhotos.length < 5)
+    g.innerHTML += `<div class="pslot" onclick="document.getElementById('fpInput').click()"><div class="p-ico">📷</div><div class="p-lbl">Agregar foto</div></div>`;
+}
+function onFPick(e) {
+  const files = Array.from(e.target.files).slice(0, 5 - fpPhotos.length);
+  let done = 0;
+  files.forEach(f => {
+    const r = new FileReader();
+    r.onload = ev => { fpPhotos.push(ev.target.result); done++; if (done === files.length) renderFPGrid(); };
+    r.readAsDataURL(f);
+  });
+  e.target.value = '';
+}
+function rmFP(i) { fpPhotos.splice(i, 1); renderFPGrid(); }
+
+function renderBens(list) {
+  document.getElementById('bensEl').innerHTML = (list||['']).map((b,i) => `
+    <div class="ben">
+      <input type="text" value="${(b||'').replace(/"/g,'&quot;')}" placeholder="Escribí un beneficio" oninput="bensData[${i}]=this.value">
+      <button onclick="rmBen(${i})">✕</button>
+    </div>`).join('');
+}
+function addBen(v) { bensData.push(v); renderBens(bensData); }
+function rmBen(i) { if (bensData.length > 1) { bensData.splice(i,1); renderBens(bensData); } }
+
+function editProd(id) {
+  const p = products.find(q => q.id === id); if (!p) return;
+  editingId = id;
+  goSec('nuevo');
+  document.getElementById('formH').textContent = 'Editar Producto';
+  document.getElementById('fn').value  = p.nombre   || '';
+  document.getElementById('fc').value  = p.categoria|| '';
+  document.getElementById('fst').value = p.subtitulo|| '';
+  document.getElementById('fco').value = p.contenido|| '';
+  document.getElementById('fpr').value = p.precio   || '';
+  document.getElementById('fsk').value = p.stock    || '';
+  document.getElementById('fdesc').value = p.descuento || 0;
+  document.getElementById('fent').value = p.entrega || 'Inmediato';
+  document.getElementById('fnuevo').value = p.nuevo ? 'si' : 'no';
+  document.getElementById('fac').value = p.activos  || '';
+  document.getElementById('fmu').value = p.modo_uso || '';
+  document.getElementById('fpc').value = p.precauciones || '';
+  document.getElementById('fvc').value = p.vencimiento  || '';
+  document.getElementById('fno').value = p.notas    || '';
+  bensData = p.beneficios ? [...p.beneficios] : [''];
+  renderBens(bensData);
+  fpPhotos = p.photos ? [...p.photos] : (p.imgBase64 ? [p.imgBase64] : []);
+  renderFPGrid();
+}
+function resetForm() {
+  editingId = null;
+  document.getElementById('formH').textContent = 'Nuevo Producto';
+  ['fn','fc','fst','fco','fpr','fsk','fdesc','fac','fmu','fpc','fvc','fno'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('fent').value = '';
+  document.getElementById('fnuevo').value = 'no';
+  document.getElementById('fdesc').value = '0';
+  bensData = [''];
+  renderBens(bensData);
+  fpPhotos = [];
+  renderFPGrid();
+}
+function saveProd() {
+  const nombre    = document.getElementById('fn').value.trim();
+  const categoria = document.getElementById('fc').value;
+  if (!nombre || !categoria) { alert('El nombre y la categoría son obligatorios.'); return; }
+  const descuento = parseFloat(document.getElementById('fdesc').value) || 0;
+  const esNuevo = document.getElementById('fnuevo').value === 'si';
+  
+  const data = {
+    nombre, categoria,
+    subtitulo:   document.getElementById('fst').value.trim(),
+    contenido:   document.getElementById('fco').value.trim(),
+    precio:      document.getElementById('fpr').value.trim(),
+    stock:       document.getElementById('fsk').value.trim(),
+    descuento:   descuento,
+    entrega:     document.getElementById('fent').value || 'Inmediato',
+    nuevo:       esNuevo,
+    fechaNuevo:  esNuevo ? new Date().getTime() : null,
+    activos:     document.getElementById('fac').value.trim(),
+    beneficios:  bensData.filter(b => (b||'').trim()),
+    modo_uso:    document.getElementById('fmu').value.trim(),
+    precauciones:document.getElementById('fpc').value.trim(),
+    vencimiento: document.getElementById('fvc').value.trim(),
+    notas:       document.getElementById('fno').value.trim(),
+    photos:      fpPhotos,
+    imgBase64:   fpPhotos[0] || null,
+    emoji:       catEmoji(categoria)
+  };
+  if (editingId) {
+    const idx = products.findIndex(p => p.id === editingId);
+    if (idx > -1) products[idx] = { ...products[idx], ...data };
+  } else {
+    data.id = Date.now();
+    products.push(data);
+  }
+  lsSet('vv_products', products);
+  showToast(editingId ? '✓ Producto actualizado' : '✓ Producto agregado al catálogo');
+  editingId = null;
+  renderPublic();
+  goSec('lista');
+}
+
+// ════════════════════════════════════════════════════
+//  IA
+// ════════════════════════════════════════════════════
+function renderIAGrid() {
+  const g = document.getElementById('iaGrid');
+  g.innerHTML = iaPhotos.map((s,i) => `
+    <div class="pslot filled"><img src="${s}" alt=""><button class="prm" onclick="rmIA(${i})">✕</button></div>
+  `).join('');
+  if (iaPhotos.length < 4)
+    g.innerHTML += `<div class="pslot" onclick="document.getElementById('iaInput').click()"><div class="p-ico">📷</div><div class="p-lbl">Subir foto</div></div>`;
+}
+function onIAPick(e) {
+  const files = Array.from(e.target.files).slice(0, 4 - iaPhotos.length);
+  let done = 0;
+  files.forEach(f => {
+    const r = new FileReader();
+    r.onload = ev => { iaPhotos.push(ev.target.result); done++; if (done === files.length) renderIAGrid(); };
+    r.readAsDataURL(f);
+  });
+  e.target.value = '';
+}
+function rmIA(i) { iaPhotos.splice(i, 1); renderIAGrid(); }
+
+async function runIA() {
+  const nombre    = document.getElementById('ian').value.trim();
+  const categoria = document.getElementById('iac').value;
+  if (!nombre || !categoria) { alert('El nombre y la categoría son obligatorios.'); return; }
+  const btn = document.getElementById('aiBtn');
+  const st  = document.getElementById('iaSt');
+  const res = document.getElementById('iaRes');
+  btn.disabled = true; res.style.display = 'none';
+  st.className = 'stbar load';
+  st.innerHTML = '<div class="spin"></div><span>Analizando y generando ficha técnica completa...</span>';
+  const ing = document.getElementById('iai').value.trim();
+  const uso = document.getElementById('iau').value.trim();
+  const con = document.getElementById('iaco').value.trim();
+  const ctx = document.getElementById('iactx').value.trim();
+  const prompt = `Sos experta en cosmética natural artesanal de la marca Vivinatur (Argentina). Generá una ficha técnica profesional.\n\nProducto: "${nombre}"\nCategoría: ${categoria}\n${ing?'Activo principal: '+ing:''}\n${uso?'Tipo de piel / uso: '+uso:''}\n${con?'Presentación: '+con:''}\n${ctx?'Contexto extra: '+ctx:''}\n\nRespondé SOLO con JSON válido sin texto ni markdown:\n{"subtitulo":"frase atractiva max 8 palabras","activos":"4-6 activos separados por ·","beneficios":["ben1","ben2","ben3","ben4","ben5"],"modo_uso":"instrucciones en 2-3 oraciones","precauciones":"precauciones en 2-3 oraciones","vencimiento":"vida útil estimada","notas":"dato relevante extra"}`;
+  try {
+    const content = [];
+    iaPhotos.forEach(b64 => content.push({ type:'image', source:{ type:'base64', media_type: b64.split(';')[0].split(':')[1], data: b64.split(',')[1] } }));
+    content.push({ type:'text', text: prompt });
+    const resp = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{ role:'user', content: iaPhotos.length ? content : prompt }] }) });
+    const d = await resp.json();
+    const txt = (d.content||[]).map(i=>i.text||'').join('');
+    const p = JSON.parse(txt.replace(/```json|```/g,'').trim());
+    document.getElementById('rsu').value = p.subtitulo||'';
+    document.getElementById('rac').value = p.activos||'';
+    document.getElementById('rbe').value = (p.beneficios||[]).join('\n');
+    document.getElementById('rmu').value = p.modo_uso||'';
+    document.getElementById('rpc').value = p.precauciones||'';
+    document.getElementById('rvc').value = p.vencimiento||'';
+    document.getElementById('rno').value = p.notas||'';
+    st.className = 'stbar ok';
+    st.innerHTML = '✓ ¡Ficha generada! Revisá y editá antes de guardar.';
+    res.style.display = 'block';
+  } catch(err) {
+    st.className = 'stbar err';
+    st.innerHTML = '❌ Error al generar. Revisá tu conexión e intentá de nuevo.';
+  }
+  btn.disabled = false;
+}
+function saveFromIA() {
+  const nombre = document.getElementById('ian').value.trim();
+  const cat    = document.getElementById('iac').value;
+  if (!nombre || !cat) { alert('Nombre y categoría son obligatorios.'); return; }
+  const bens = document.getElementById('rbe').value.split('\n').map(b=>b.trim()).filter(Boolean);
+  const prod = {
+    id: Date.now(), nombre, categoria: cat,
+    contenido:    document.getElementById('iaco').value.trim(),
+    precio:       document.getElementById('iapr').value.trim(),
+    subtitulo:    document.getElementById('rsu').value.trim(),
+    activos:      document.getElementById('rac').value.trim(),
+    beneficios:   bens,
+    modo_uso:     document.getElementById('rmu').value.trim(),
+    precauciones: document.getElementById('rpc').value.trim(),
+    vencimiento:  document.getElementById('rvc').value.trim(),
+    notas:        document.getElementById('rno').value.trim(),
+    photos:       iaPhotos,
+    imgBase64:    iaPhotos[0]||null,
+    emoji:        catEmoji(cat)
+  };
+  products.push(prod);
+  lsSet('vv_products', products);
+  showToast('✓ Producto guardado al catálogo');
+  resetIA();
+  goSec('lista');
+}
+function resetIA() {
+  iaPhotos = []; renderIAGrid();
+  ['ian','iac','iai','iau','iaco','iapr','iactx'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('iaRes').style.display = 'none';
+  document.getElementById('iaSt').className = 'stbar';
+  document.getElementById('aiBtn').disabled = false;
+}
+
+// ════════════════════════════════════════════════════
+//  MARCA FORM
+// ════════════════════════════════════════════════════
+function loadMarcaForm() {
+  document.getElementById('mNombre').value     = marca.nombre      || '';
+  document.getElementById('mTagline').value    = marca.tagline     || '';
+  document.getElementById('mBadge').value      = marca.badge       || '';
+  document.getElementById('mHeroTitle').value  = marca.hero_title  || '';
+  document.getElementById('mHeroSub').value    = marca.hero_sub    || '';
+  document.getElementById('mAboutLabel').value = marca.about_label || '';
+  document.getElementById('mAboutTitle').value = marca.about_title || '';
+  document.getElementById('mAboutText').value  = marca.about_text  || '';
+  document.getElementById('mFooter').value     = marca.footer      || '';
+  valsData = (marca.valores||[]).map(v => ({...v}));
+  renderValsEditor();
+}
+
+function renderValsEditor() {
+  document.getElementById('valsEditor').innerHTML = valsData.map((v,i) => `
+    <div class="val-row">
+      <input type="text" value="${(v.icon||'').replace(/"/g,'&quot;')}"   placeholder="🌱"            oninput="valsData[${i}].icon=this.value">
+      <input type="text" value="${(v.titulo||'').replace(/"/g,'&quot;')}" placeholder="Título"         oninput="valsData[${i}].titulo=this.value">
+      <input type="text" value="${(v.texto||'').replace(/"/g,'&quot;')}"  placeholder="Descripción breve" oninput="valsData[${i}].texto=this.value">
+      <button class="val-del" onclick="rmVal(${i})">✕</button>
+    </div>`).join('');
+}
+function addVal() { if (valsData.length >= 4) { alert('Máximo 4 valores.'); return; } valsData.push({icon:'🌱',titulo:'',texto:''}); renderValsEditor(); }
+function rmVal(i) { valsData.splice(i,1); renderValsEditor(); }
+
+function saveMarca() {
+  // Leemos TODOS los campos del formulario
+  marca = {
+    nombre:      document.getElementById('mNombre').value.trim()     || 'VIVINATUR',
+    tagline:     document.getElementById('mTagline').value.trim(),
+    badge:       document.getElementById('mBadge').value.trim(),
+    hero_title:  document.getElementById('mHeroTitle').value.trim(),
+    hero_sub:    document.getElementById('mHeroSub').value.trim(),
+    about_label: document.getElementById('mAboutLabel').value.trim(),
+    about_title: document.getElementById('mAboutTitle').value.trim(),
+    about_text:  document.getElementById('mAboutText').value,        // sin trim para preservar párrafos
+    footer:      document.getElementById('mFooter').value.trim(),
+    valores:     valsData.filter(v => (v.titulo||'').trim())
+  };
+  lsSet('vv_marca', marca);   // guardar en localStorage para persistencia
+  renderPublic();              // actualizar el catálogo YA
+  showToast('✓ Información de la marca guardada y actualizada');
+}
+
+// ════════════════════════════════════════════════════
+//  CONTACTO FORM
+// ════════════════════════════════════════════════════
+function loadContactoForm() {
+  document.getElementById('cTitulo').value = contacto.titulo || '';
+  document.getElementById('cSub').value    = contacto.sub    || '';
+  document.getElementById('cWA').value     = contacto.wa     || '';
+  document.getElementById('cTel').value    = contacto.tel    || '';
+  document.getElementById('cEmail').value  = contacto.email  || '';
+  document.getElementById('cCiudad').value = contacto.ciudad || '';
+  document.getElementById('cWAMsg').value  = contacto.wa_msg || '';
+  document.getElementById('cIG').value     = contacto.ig     || '';
+  document.getElementById('cFB').value     = contacto.fb     || '';
+  document.getElementById('cTT').value     = contacto.tt     || '';
+}
+
+function saveContacto() {
+  // Leemos TODOS los campos del formulario de contacto
+  contacto = {
+    titulo: document.getElementById('cTitulo').value.trim(),
+    sub:    document.getElementById('cSub').value.trim(),
+    wa:     document.getElementById('cWA').value.trim(),
+    tel:    document.getElementById('cTel').value.trim(),
+    email:  document.getElementById('cEmail').value.trim(),
+    ciudad: document.getElementById('cCiudad').value.trim(),
+    wa_msg: document.getElementById('cWAMsg').value.trim(),
+    ig:     document.getElementById('cIG').value.trim(),
+    fb:     document.getElementById('cFB').value.trim(),
+    tt:     document.getElementById('cTT').value.trim()
+  };
+  lsSet('vv_contacto', contacto);  // guardar en localStorage
+  renderPublic();                    // actualizar el catálogo YA
+  showToast('✓ Contacto guardado y actualizado en el catálogo');
+}
+
+// ════════════════════════════════════════════════════
+//  SHARE
+// ════════════════════════════════════════════════════
+function copyLink() {
+  const texto = window.location.href;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(texto).then(() => {
+      const b = document.querySelector('.sb.cp');
+      if (b) { 
+        b.textContent = '✓ ¡Copiado!'; 
+        setTimeout(() => b.textContent = '🔗 Compartir catálogo', 2200); 
+      }
+    }).catch(err => {
+      console.error('Error al copiar:', err);
+      alert('Link del catálogo: ' + texto);
+    });
+  } else {
+    // Fallback para navegadores que no soportan clipboard API
+    const textarea = document.createElement('textarea');
+    textarea.value = texto;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    const b = document.querySelector('.sb.cp');
+    if (b) { 
+      b.textContent = '✓ ¡Copiado!'; 
+      setTimeout(() => b.textContent = '🔗 Compartir catálogo', 2200); 
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  CARRITO
+// ════════════════════════════════════════════════════
+function toggleCart() {
+  const modal = document.getElementById('cartOverlay');
+  if (modal.classList.contains('on')) {
+    modal.classList.remove('on');
+    document.body.style.overflow = '';
+  } else {
+    modal.classList.add('on');
+    document.body.style.overflow = 'hidden';
+    renderCartModal();
+  }
+}
+
+function addToCart(prodId, nombre, precio, presentacion) {
+  const existing = cart.find(c => c.id === prodId);
+  if (existing) {
+    existing.cantidad++;
+  } else {
+    cart.push({id: prodId, nombre, precio: parseFloat(precio) || 0, cantidad: 1, presentacion});
+  }
+  lsSet('vv_cart', cart);
+  updateCartBadge();
+  showToast('✓ Agregado al carrito');
+}
+
+function removeFromCart(prodId) {
+  cart = cart.filter(c => c.id !== prodId);
+  lsSet('vv_cart', cart);
+  renderCartModal();
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  const badge = document.getElementById('cartBadge');
+  if (cart.length > 0) {
+    badge.textContent = cart.length;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function renderCartModal() {
+  const cartList = document.getElementById('cartList');
+  const cartTotal = document.getElementById('cartTotal');
+
+  if (cart.length === 0) {
+    cartList.innerHTML = '<p style="color:var(--muted);text-align:center;padding:1rem">Tu carrito está vacío</p>';
+    cartTotal.textContent = '0.00';
+    return;
+  }
+
+  const html = cart.map(item => {
+    const subtotal = (item.precio * item.cantidad).toFixed(2);
+    return `
+      <div class="cart-item">
+        <div>
+          <strong>${item.nombre}</strong><br>
+          <span style="font-size:.7rem;color:var(--muted)">$${item.precio.toFixed(2)} × ${item.cantidad} = $${subtotal}</span><br>
+          <span style="font-size:.65rem;color:var(--muted)">${item.presentacion}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.3rem;white-space:nowrap">
+          <input type="number" value="${item.cantidad}" min="1" max="100" onchange="cart.find(c=>c.id===${item.id}).cantidad=parseInt(this.value);renderCartModal();lsSet('vv_cart',cart)">
+          <button onclick="removeFromCart(${item.id})">✕</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  cartList.innerHTML = html;
+  const total = cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+  cartTotal.textContent = total.toFixed(2);
+}
+
+function finalizarCompra() {
+  if (cart.length === 0) { showToast('Carrito vacío'); return; }
+
+  const ubicacion = document.getElementById('cartUbicacion').value.trim();
+  const contactData = lsGet('vv_contacto', CONTACTO_DEFAULT);
+  const detalles = cart.map(item => {
+    const subtotal = (item.precio * item.cantidad).toFixed(2);
+    return `${item.nombre} (${item.presentacion}) - ${item.cantidad}x - $${subtotal}`;
+  }).join('%0A');
+
+  const total = cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0).toFixed(2);
+  const mensaje = `Hola! Me gustaría comprar:%0A%0A${detalles}%0A%0ATotal: $${total}%0A${ubicacion ? `Enviar a: ${ubicacion}%0A` : ''}Esperaré tu confirmación. Gracias!`;
+  
+  const waNum = contactData.wa || '';
+  if (!waNum) { showToast('❌ Número de WhatsApp no configurado en admin'); return; }
+  
+  const waLink = `https://wa.me/${waNum.replace(/\D/g,'')}?text=${mensaje}`;
+  window.open(waLink, '_blank');
+
+  cart = [];
+  lsSet('vv_cart', cart);
+  toggleCart();
+  updateCartBadge();
+  showToast('✓ Abierto WhatsApp');
+}
+
+// ════════════════════════════════════════════════════
+//  COMENTARIOS/RESEÑAS
+// ════════════════════════════════════════════════════
+function saveReview() {
+  const rating = parseInt(document.getElementById('revRating').value);
+  const name = document.getElementById('revName').value.trim();
+  const text = document.getElementById('revText').value.trim();
+
+  if (!name || !text) { showToast('Completa todos los campos'); return; }
+
+  const review = { name, rating, text, fecha: new Date().toLocaleDateString('es-ES') };
+  reviews.push(review);
+  lsSet('vv_reviews', reviews);
+  
+  showToast('✓ Opinión guardada');
+  document.getElementById('revName').value = '';
+  document.getElementById('revText').value = '';
+  document.getElementById('revRating').value = 5;
+  document.getElementById('revRatingLabel').textContent = '★★★★★';
+  renderReviews();
+}
+
+function renderReviews() {
+  reviews = lsGet('vv_reviews', []);
+  const html = reviews.slice(-6).reverse().map(r => {
+    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+    return `
+      <div class="review-card">
+        <div class="review-rating">${stars}</div>
+        <div class="review-name">${r.name}</div>
+        <div class="review-text">${r.text}</div>
+        <div class="review-date">${r.fecha}</div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('reviewsContainer').innerHTML = html || '<p style="color:var(--muted);text-align:center">Sin opiniones aún</p>';
+}
+
+// ════════════════════════════════════════════════════
+//  DESCARGAR/CARGAR DATOS
+// ════════════════════════════════════════════════════
+function downloadData() {
+  const data = {
+    products: products,
+    reviews: reviews,
+    marca: marca,
+    contacto: contacto,
+    fecha: new Date().toISOString()
+  };
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `vivinatur-backup-${new Date().getTime()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✓ Datos descargados');
+}
+
+// ════════════════════════════════════════════════════
+//  EVENT LISTENERS
+// ════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  const slider = document.getElementById('revRating');
+  if (slider) {
+    slider.addEventListener('input', (e) => {
+      const stars = '★'.repeat(e.target.value) + '☆'.repeat(5 - e.target.value);
+      document.getElementById('revRatingLabel').textContent = stars;
+    });
+  }
+});
+
+// Cargar datos desde localStorage
+cart = lsGet('vv_cart', []);
+reviews = lsGet('vv_reviews', []);
+
+renderPublic();
+renderReviews();
+updateCartBadge();
+renderFPGrid();
+renderIAGrid();
+</script>
+</body>
+</html>
