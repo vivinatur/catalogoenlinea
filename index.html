@@ -9,22 +9,88 @@
 <script type="module">
 import { initializeApp }        from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, doc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 // ⚠️ REEMPLAZÁ estos valores con los de tu proyecto Firebase
 // https://console.firebase.google.com → Configuración del proyecto → Tus apps → SDK
 const firebaseConfig = {
-  apiKey:            "TU_API_KEY",
-  authDomain:        "TU_PROYECTO.firebaseapp.com",
-  projectId:         "TU_PROYECTO",
-  storageBucket:     "TU_PROYECTO.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId:             "TU_APP_ID"
+  apiKey: "AIzaSyADXLtPhBXvt7zf0fvXuZcsInkOG9OBRuk",
+  authDomain: "vivinatur-1a2dd.firebaseapp.com",
+  databaseURL: "https://vivinatur-1a2dd-default-rtdb.firebaseio.com",
+  projectId: "vivinatur-1a2dd",
+  storageBucket: "vivinatur-1a2dd.firebasestorage.app",
+  messagingSenderId: "379717422197",
+  appId: "1:379717422197:web:ebb455b72ccde65534fc3c",
+  measurementId: "G-928ZYV7JRQ"
 };
 
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
+
+  // 1. Función para Guardar Opinión (conectada a tus IDs de HTML)
+window.saveReview = async () => {
+  const nombre = document.getElementById('revName').value;
+  const mensaje = document.getElementById('revText').value;
+  const estrellas = document.getElementById('revRating').value;
+
+  if(!nombre || !mensaje) return alert("Por favor, completa tu nombre y mensaje.");
+
+  try {
+    await addDoc(collection(db, "comentarios"), {
+      nombre: nombre,
+      mensaje: mensaje,
+      estrellas: parseInt(estrellas),
+      fecha: new Date()
+    });
+    alert("¡Gracias por tu opinión!");
+    document.getElementById('revName').value = "";
+    document.getElementById('revText').value = "";
+    window.loadReviewsFromFirebase(); // Recarga la lista automáticamente
+  } catch (e) { console.error("Error al guardar:", e); }
+};
+
+// 2. Función para Borrar (Solo funcionará si estás logueado)
+window.borrarComentario = async (id) => {
+  if(confirm("¿Eliminar este comentario permanentemente?")) {
+    try {
+      await deleteDoc(doc(db, "comentarios", id));
+      window.loadReviewsFromFirebase();
+    } catch (e) { alert("No tienes permisos para borrar."); }
+  }
+};
+
+// 3. Función para Cargar y Mostrar las reseñas en tu contenedor
+window.loadReviewsFromFirebase = async () => {
+  const container = document.getElementById('reviewsContainer');
+  if (!container) return;
+
+  const q = query(collection(db, "comentarios"), orderBy("fecha", "desc"), limit(10));
+  
+  try {
+    const querySnapshot = await getDocs(q);
+    container.innerHTML = ""; 
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const stars = '★'.repeat(data.estrellas || 5) + '☆'.repeat(5 - (data.estrellas || 5));
+      
+      // Si eres admin, agregamos el botón de borrar
+      const btnBorrar = isAdmin ? `<button onclick="borrarComentario('${doc.id}')" style="color:var(--red); background:none; border:none; cursor:pointer; font-size:0.8rem; margin-top:10px; display:block">Eliminar Comentario</button>` : '';
+
+      container.innerHTML += `
+        <div class="review-card" style="background:var(--white); padding:1.5rem; border-radius:8px; margin-bottom:1rem; box-shadow:var(--sh)">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem">
+            <strong style="color:var(--bark)">${data.nombre}</strong>
+            <span style="color:var(--gold)">${stars}</span>
+          </div>
+          <p style="color:var(--text); font-size:0.95rem">${data.mensaje}</p>
+          ${btnBorrar}
+        </div>
+      `;
+    });
+  } catch (e) { console.error("Error al cargar:", e); }
+};
 
 // Exponer helpers globales para que el script principal los use
 window._fbAuth      = auth;
@@ -1886,6 +1952,12 @@ renderIAGrid();
 
 // Cargar logo guardado
 updateLogoUI(lsGet('vv_logo', null));
+  <footer style="margin-top: 50px; padding: 20px; text-align: center; opacity: 0.4;">
+  <button onclick="const p = prompt('Password de Admin:'); loginAdmin('yesicabarros27@gmail.com', p)" 
+          style="background:none; border:1px solid var(--muted); color:var(--muted); padding:5px 10px; cursor:pointer; font-size:11px;">
+    Acceso Gestión
+  </button>
+</footer>
 
 </script>
 </body>
