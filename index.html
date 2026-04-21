@@ -9,7 +9,7 @@
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getDatabase, ref, push, set, onValue, remove } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+import { getDatabase, ref, push, set, get, onValue, remove } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyADXLtPhBXvt7zf0fvXuZcsInkOG9OBRuk",
@@ -22,18 +22,27 @@ const firebaseConfig = {
   measurementId: "G-928ZYV7JRQ"
 };
 
-// Inicialización limpia
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
+// Exponemos helpers para el script principal
+window._fbDb      = db;
+window._fbRef     = ref;
+window._fbSet     = set;
+window._fbGet     = get;
+window._fbPush    = push;
+window._fbRemove  = remove;
+window._fbOnValue = onValue;
+window._fbAuth    = auth;
+window._fbSignIn  = signInWithEmailAndPassword;
+
 let isAdmin = false;
 
-// --- GESTIÓN DE ADMINISTRADOR ---
 window.loginAdmin = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    alert("¡Sesión de Admin iniciada!");
+    alert("\u00a1Sesi\u00f3n de Admin iniciada!");
   } catch (error) {
     alert("Error: " + error.message);
   }
@@ -50,34 +59,26 @@ onAuthStateChanged(auth, (user) => {
 });
 
 window.borrarComentario = (id) => {
-  if (confirm("¿Eliminar este comentario permanentemente?")) {
+  if (confirm("\u00bfEliminar este comentario permanentemente?")) {
     remove(ref(db, `comentarios/${id}`))
       .then(() => alert("Comentario eliminado"))
       .catch(() => alert("No tienes permisos suficientes"));
   }
 };
 
-// --- GESTIÓN DE RESEÑAS PÚBLICAS ---
+// Reseñas públicas
 window.saveReview = () => {
-  const nombre = document.getElementById('revName').value;
-  const mensaje = document.getElementById('revText').value;
+  const nombre    = document.getElementById('revName').value;
+  const mensaje   = document.getElementById('revText').value;
   const estrellas = document.getElementById('revRating').value;
-
-  if(!nombre || !mensaje) return alert("Por favor, completa nombre y opinión");
-
-  const listaRef = ref(db, 'comentarios');
-  const nuevoRef = push(listaRef);
-  
-  set(nuevoRef, {
-    nombre: nombre,
-    mensaje: mensaje,
-    estrellas: parseInt(estrellas),
-    fecha: Date.now()
-  }).then(() => {
-    alert("¡Gracias por tu opinión!");
-    document.getElementById('revName').value = "";
-    document.getElementById('revText').value = "";
-  });
+  if(!nombre || !mensaje) return alert("Por favor, completa nombre y opini\u00f3n");
+  const nuevoRef = push(ref(db, 'comentarios'));
+  set(nuevoRef, { nombre, mensaje, estrellas: parseInt(estrellas), fecha: Date.now() })
+    .then(() => {
+      alert("\u00a1Gracias por tu opini\u00f3n!");
+      document.getElementById('revName').value = "";
+      document.getElementById('revText').value = "";
+    });
 };
 
 // Leer comentarios en tiempo real
@@ -85,13 +86,11 @@ const container = document.getElementById('reviewsContainer');
 onValue(ref(db, 'comentarios'), (snapshot) => {
   const data = snapshot.val();
   container.innerHTML = "";
-  
   if(data) {
     Object.keys(data).reverse().forEach(key => {
       const review = data[key];
-      const stars = '★'.repeat(review.estrellas) + '☆'.repeat(5 - review.estrellas);
-      const btnBorrar = isAdmin ? `<button onclick="borrarComentario('${key}')" style="color:var(--red); background:none; border:none; cursor:pointer; display:block; margin-top:10px; font-size:12px;">Eliminar Opinión</button>` : '';
-
+      const stars = '\u2605'.repeat(review.estrellas) + '\u2606'.repeat(5 - review.estrellas);
+      const btnBorrar = isAdmin ? `<button onclick="borrarComentario('${key}')" style="color:var(--red); background:none; border:none; cursor:pointer; display:block; margin-top:10px; font-size:12px;">Eliminar Opini\u00f3n</button>` : '';
       container.innerHTML += `
         <div class="review-card" style="background:var(--white); padding:1.5rem; border-radius:8px; margin-bottom:1rem; box-shadow:var(--sh)">
           <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem">
@@ -103,7 +102,31 @@ onValue(ref(db, 'comentarios'), (snapshot) => {
         </div>`;
     });
   } else {
-    container.innerHTML = "<p style='text-align:center; color:var(--muted)'>Aún no hay opiniones. ¡Sé el primero!</p>";
+    container.innerHTML = "<p style='text-align:center; color:var(--muted)'>A\u00fan no hay opiniones. \u00a1S\u00e9 el primero!</p>";
+  }
+});
+
+// Escuchar cambios en tiempo real — productos, marca, contacto
+onValue(ref(db, 'productos'), (snap) => {
+  const data = snap.val();
+  if (data) {
+    const arr = Object.values(data);
+    window._productsFromFB = arr;
+    if (typeof window._onFBProductsLoaded === 'function') window._onFBProductsLoaded(arr);
+  }
+});
+onValue(ref(db, 'marca'), (snap) => {
+  const data = snap.val();
+  if (data) {
+    window._marcaFromFB = data;
+    if (typeof window._onFBMarcaLoaded === 'function') window._onFBMarcaLoaded(data);
+  }
+});
+onValue(ref(db, 'contacto'), (snap) => {
+  const data = snap.val();
+  if (data) {
+    window._contactoFromFB = data;
+    if (typeof window._onFBContactoLoaded === 'function') window._onFBContactoLoaded(data);
   }
 });
 </script>
@@ -998,7 +1021,7 @@ Separás los párrafos dejando una línea en blanco entre cada uno."></textarea>
 // ════════════════════════════════════════════════════
 // ⚠️ Creá un usuario con este email en Firebase Console:
 // Authentication → Users → Agregar usuario
-const ADMIN_EMAIL = 'yesicabarros27@gmail.com';
+const ADMIN_EMAIL = 'admin@vivinatur.com';
 
 async function doLogin() {
   const input = document.getElementById('lockInput');
@@ -1194,9 +1217,27 @@ function updateLogoUI(b64) {
 }
 
 
-let marca    = lsGet('vv_marca',    MARCA_DEFAULT);
-let contacto = lsGet('vv_contacto', CONTACTO_DEFAULT);
-let products = lsGet('vv_products', PRODS_DEFAULT);
+let marca    = MARCA_DEFAULT;
+let contacto = CONTACTO_DEFAULT;
+let products = PRODS_DEFAULT;
+
+// ── SYNC DESDE FIREBASE (se disparan cuando llegan datos) ──
+window._onFBProductsLoaded = function(arr) {
+  products = arr;
+  renderPublic();
+  renderList();
+};
+window._onFBMarcaLoaded = function(data) {
+  marca = data;
+  renderPublic();
+};
+window._onFBContactoLoaded = function(data) {
+  contacto = data;
+  renderPublic();
+  // Si el form de contacto está abierto, recargarlo
+  const panel = document.getElementById('sec-contacto');
+  if (panel && panel.classList.contains('show')) loadContactoForm();
+};
 
 let editingId  = null;
 let fpPhotos   = [];
@@ -1219,6 +1260,35 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ════════════════════════════════════════════════════
+//  FIREBASE HELPERS — guardar productos, marca, contacto
+// ════════════════════════════════════════════════════
+function fbSaveProducts() {
+  if (!window._fbDb || !window._fbRef || !window._fbSet) {
+    lsSet('vv_products', products); // fallback
+    return;
+  }
+  // Guardamos como objeto indexado por id para Realtime DB
+  const obj = {};
+  products.forEach(p => { obj[p.id] = p; });
+  window._fbSet(window._fbRef(window._fbDb, 'productos'), obj)
+    .catch(e => { console.warn('FB products error:', e); lsSet('vv_products', products); });
+}
+function fbSaveMarca() {
+  if (!window._fbDb || !window._fbRef || !window._fbSet) {
+    lsSet('vv_marca', marca); return;
+  }
+  window._fbSet(window._fbRef(window._fbDb, 'marca'), marca)
+    .catch(e => { console.warn('FB marca error:', e); lsSet('vv_marca', marca); });
+}
+function fbSaveContacto() {
+  if (!window._fbDb || !window._fbRef || !window._fbSet) {
+    lsSet('vv_contacto', contacto); return;
+  }
+  window._fbSet(window._fbRef(window._fbDb, 'contacto'), contacto)
+    .catch(e => { console.warn('FB contacto error:', e); lsSet('vv_contacto', contacto); });
 }
 
 // ════════════════════════════════════════════════════
@@ -1468,7 +1538,7 @@ function renderList() {
 function delProd(id) {
   if (!confirm('¿Eliminar este producto?')) return;
   products = products.filter(p => p.id !== id);
-  lsSet('vv_products', products);
+  fbSaveProducts();
   renderList();
 }
 
@@ -1575,7 +1645,7 @@ function saveProd() {
     data.id = Date.now();
     products.push(data);
   }
-  lsSet('vv_products', products);
+  fbSaveProducts();
   showToast(editingId ? '✓ Producto actualizado' : '✓ Producto agregado al catálogo');
   editingId = null;
   renderPublic();
@@ -1691,7 +1761,7 @@ function saveFromIA() {
     emoji:        catEmoji(cat)
   };
   products.push(prod);
-  lsSet('vv_products', products);
+  fbSaveProducts();
   showToast('✓ Producto guardado al catálogo');
   resetIA();
   goSec('lista');
@@ -1750,7 +1820,7 @@ function saveMarca() {
     footer:      document.getElementById('mFooter').value.trim(),
     valores:     valsData.filter(v => (v.titulo||'').trim())
   };
-  lsSet('vv_marca', marca);   // guardar en localStorage para persistencia
+  fbSaveMarca();
   renderPublic();              // actualizar el catálogo YA
   showToast('✓ Información de la marca guardada y actualizada');
 }
@@ -1785,7 +1855,7 @@ function saveContacto() {
     fb:     document.getElementById('cFB').value.trim(),
     tt:     document.getElementById('cTT').value.trim()
   };
-  lsSet('vv_contacto', contacto);  // guardar en localStorage
+  fbSaveContacto();
   renderPublic();                    // actualizar el catálogo YA
   showToast('✓ Contacto guardado y actualizado en el catálogo');
 }
@@ -1902,7 +1972,7 @@ function finalizarCompra() {
   if (cart.length === 0) { showToast('Carrito vacío'); return; }
 
   const ubicacion = document.getElementById('cartUbicacion').value.trim();
-  const contactData = lsGet('vv_contacto', CONTACTO_DEFAULT);
+  const contactData = contacto;
   const detalles = cart.map(item => {
     const subtotal = (item.precio * item.cantidad).toFixed(2);
     return `${item.nombre} (${item.presentacion}) - ${item.cantidad}x - $${subtotal}`;
@@ -1948,7 +2018,7 @@ renderIAGrid();
 updateLogoUI(lsGet('vv_logo', null));
 
 </script> <footer style="margin-top: 50px; padding: 20px; text-align: center; opacity: 0.4;">
-  <button onclick="const p = prompt('Password de Admin:'); loginAdmin('yesicabarros27@GMAIL.COM', p)" 
+  <button onclick="const p = prompt('Password de Admin:'); loginAdmin('TU_CORREO@GMAIL.COM', p)" 
           style="background:none; border:1px solid var(--muted); color:var(--muted); padding:5px 10px; cursor:pointer; font-size:11px;">
     Acceso Gestión
   </button>
