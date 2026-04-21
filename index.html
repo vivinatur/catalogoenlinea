@@ -230,7 +230,11 @@ img{max-width:100%;display:block}
 .acontent{padding:1.8rem}
 .panel{display:none}.panel.show{display:block;animation:panelIn .28s ease}
 @keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
+#precio-sugerido-display {
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin-left: 0.5rem;
+}
 /* FORM COMPONENTS */
 .sec-h{font-family:'Cormorant Garamond',serif;font-size:1.65rem;color:var(--bark);margin-bottom:.3rem}
 .sec-p{font-size:.82rem;color:var(--sub);margin-bottom:1.6rem;line-height:1.72}
@@ -795,7 +799,7 @@ Separás los párrafos dejando una línea en blanco entre cada uno."></textarea>
       <button class="secondary" onclick="toggleCart()">Seguir Comprando</button>
     </div>
   </div>
-</div>
+</div>  
 
 <div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
@@ -1033,7 +1037,27 @@ function renderGrid() {
       }).join('')}
     </div>`).join('');
 }
-
+<div class="card">
+  <div class="card-h">🧮 CALCULADOR DE PRECIO SUGERIDO</div>
+  <div class="row three">
+    <div class="fg">
+      <label>Costo Materias Primas</label>
+      <input type="number" id="calc-materias" placeholder="0.00" oninput="calcularPrecioSugerido()">
+    </div>
+    <div class="fg">
+      <label>Mano de Obra / Otros</label>
+      <input type="number" id="calc-otros" placeholder="0.00" oninput="calcularPrecioSugerido()">
+    </div>
+    <div class="fg">
+      <label>% Margen Ganancia</label>
+      <input type="number" id="calc-margen" value="100" oninput="calcularPrecioSugerido()">
+    </div>
+  </div>
+  <div style="background: var(--gold-lite); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--gold); margin-top: 1rem;">
+    <p style="font-size: 0.8rem; color: var(--bark); font-weight: 700;">PRECIO SUGERIDO: <span id="precio-sugerido-display">$0.00</span></p>
+    <button type="button" class="add-btn" style="border-style: solid; margin-top: 0.5rem;" onclick="aplicarPrecioSugerido()">Aplicar este precio</button>
+  </div>
+</div>
 // ════════════════════════════════════════════════════
 //  MODAL
 // ════════════════════════════════════════════════════
@@ -1278,6 +1302,32 @@ function saveProd() {
   goSec('lista');
 }
 
+function calcularPrecioSugerido() {
+  const materias = parseFloat(document.getElementById('calc-materias').value) || 0;
+  const otros = parseFloat(document.getElementById('calc-otros').value) || 0;
+  const margen = parseFloat(document.getElementById('calc-margen').value) || 0;
+
+  const costoTotal = materias + otros;
+  const precioSugerido = costoTotal + (costoTotal * (margen / 100));
+
+  document.getElementById('precio-sugerido-display').textContent = 
+    new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(precioSugerido);
+  
+  // Guardamos el valor numérico en un atributo temporal del span para usarlo luego
+  document.getElementById('precio-sugerido-display').dataset.valor = precioSugerido.toFixed(2);
+}
+
+function aplicarPrecioSugerido() {
+  const sugerido = document.getElementById('precio-sugerido-display').dataset.valor;
+  if (sugerido && sugerido > 0) {
+    // Busca el input real de precio de tu formulario de productos
+    const inputPrecio = document.getElementById('prodPrice'); 
+    if (inputPrecio) {
+      inputPrecio.value = sugerido;
+      showToast('✓ Precio aplicado');
+    }
+  }
+}
 // ════════════════════════════════════════════════════
 //  IA
 // ════════════════════════════════════════════════════
