@@ -53,8 +53,18 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     document.body.classList.add('admin-mode');
     console.log("Modo administrador activo");
+    // Mostrar botones de acceso al panel
+    const b1 = document.getElementById('btnAdminAccess');
+    const b2 = document.getElementById('btnPanelAdmin');
+    if (b1) b1.style.display = 'inline-flex';
+    if (b2) b2.style.display = 'inline-flex';
   } else {
     document.body.classList.remove('admin-mode');
+    // Ocultar botones de acceso al panel
+    const b1 = document.getElementById('btnAdminAccess');
+    const b2 = document.getElementById('btnPanelAdmin');
+    if (b1) b1.style.display = 'none';
+    if (b2) b2.style.display = 'none';
   }
 });
 
@@ -516,7 +526,7 @@ img{max-width:100%;display:block}
     <span id="cartBadge" class="cart-badge" style="display:none; top:-5px; right:-5px;">0</span>
   </button>
 
-  <button class="hbtn ghost" onclick="showLock()" id="btnAdminAccess">⚙ Admin</button>
+  <button class="hbtn ghost" onclick="showLock()" id="btnAdminAccess" style="display:none">⚙ Admin</button>
 </div>
     </div>
   </header>
@@ -593,7 +603,7 @@ img{max-width:100%;display:block}
       <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
         <button class="sb" style="background:var(--green);color:#fff" onclick="toggleCart()">🛒 Ver Carrito</button>
         <button class="sb cp" onclick="copyLink()">🔗 Compartir Catálogo</button>
-        <button class="sb" style="background:var(--clay);color:#fff" onclick="showLock()">⚙️ Panel Admin</button>
+        <button class="sb" id="btnPanelAdmin" style="background:var(--clay);color:#fff;display:none" onclick="showLock()">⚙️ Panel Admin</button>
       </div>
     </div>
   </section>
@@ -2055,7 +2065,7 @@ renderIAGrid();
 updateLogoUI(lsGet('vv_logo', null));
 
 </script> <footer style="margin-top: 50px; padding: 20px; text-align: center; opacity: 0.4;">
-  <button onclick="const p = prompt('Password de Admin:'); loginAdmin('yesicabarros27@GMAIL.COM', p)" 
+  <button onclick="const p = prompt('Password de Admin:'); loginAdmin('TU_CORREO@GMAIL.COM', p)" 
           style="background:none; border:1px solid var(--muted); color:var(--muted); padding:5px 10px; cursor:pointer; font-size:11px;">
     Acceso Gestión
   </button>
