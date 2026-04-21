@@ -1816,6 +1816,33 @@ renderIAGrid();
 
 // Cargar logo guardado
 updateLogoUI(lsGet('vv_logo', null));
+  function agregarFilaMateria() {
+  const div = document.createElement('div');
+  div.className = 'input-row';
+  div.style = 'display: flex; gap: 5px; margin-bottom: 10px;';
+  div.innerHTML = '<input type="text" placeholder="Ingrediente" style="flex: 2; padding: 8px;"><input type="number" placeholder="$" class="costo-item" style="flex: 1; padding: 8px;"><button onclick="this.parentElement.remove()">x</button>';
+  document.getElementById('materia-prima-lista').appendChild(div);
+}
+
+function calcularTodo() {
+  let materias = 0;
+  document.querySelectorAll('.costo-item').forEach(i => materias += parseFloat(i.value) || 0);
+  const envase = parseFloat(document.getElementById('costo-envase').value) || 0;
+  const etiqueta = parseFloat(document.getElementById('costo-etiqueta').value) || 0;
+  const subtotal = materias + envase + etiqueta;
+  const perdida = subtotal * 0.05;
+  const manoObra = (parseFloat(document.getElementById('tiempo-horas').value) || 0) * (parseFloat(document.getElementById('valor-hora').value) || 0);
+  const total = subtotal + perdida + manoObra;
+
+  document.getElementById('res-perdida').textContent = '$' + perdida.toFixed(2);
+  document.getElementById('res-total').textContent = '$' + total.toFixed(2);
+}
+
+function toggleAdmin() {
+  const s = document.getElementById('admin-section');
+  s.style.display = (s.style.display === 'none') ? 'block' : 'none';
+  if(s.style.display === 'block') s.scrollIntoView({behavior: 'smooth'});
+}
 </script>
 </body>
 </html>
