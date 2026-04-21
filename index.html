@@ -407,7 +407,6 @@ img{max-width:100%;display:block}
       <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--bark);margin-bottom:1.5rem;font-weight:400">Opciones</h3>
       <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
         <button class="sb" style="background:var(--green);color:#fff" onclick="toggleCart()">🛒 Ver Carrito</button>
-        <button class="sb dl" onclick="downloadData()">💾 Descargar Datos</button>
         <button class="sb cp" onclick="copyLink()">🔗 Compartir Catálogo</button>
         <button class="sb" style="background:var(--clay);color:#fff" onclick="showLock()">⚙️ Panel Admin</button>
       </div>
@@ -955,7 +954,6 @@ function renderPublic() {
   if (ct.fb)  soc.push(`<a class="sb fb" href="https://facebook.com/${x(ct.fb)}" target="_blank">👍 Facebook</a>`);
   if (ct.tt)  soc.push(`<a class="sb tt" href="https://tiktok.com/@${x(ct.tt)}" target="_blank">🎵 TikTok</a>`);
   soc.push(`<button class="sb cp" onclick="copyLink()">🔗 Compartir catálogo</button>`);
-  soc.push(`<button class="sb dl" onclick="downloadData()">💾 Descargar Datos</button>`);
   document.getElementById('pubSocial').innerHTML = soc.join('');
 
   buildFilters();
