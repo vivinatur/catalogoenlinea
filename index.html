@@ -7,12 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <!-- Firebase init (módulo ES — no modifiques este bloque) -->
 <script type="module">
-import { initializeApp }        from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, doc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getDatabase, ref, push, set, onValue, remove } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-// ⚠️ REEMPLAZÁ estos valores con los de tu proyecto Firebase
-// https://console.firebase.google.com → Configuración del proyecto → Tus apps → SDK
 const firebaseConfig = {
   apiKey: "AIzaSyADXLtPhBXvt7zf0fvXuZcsInkOG9OBRuk",
   authDomain: "vivinatur-1a2dd.firebaseapp.com",
@@ -24,93 +22,98 @@ const firebaseConfig = {
   measurementId: "G-928ZYV7JRQ"
 };
 
-const app  = initializeApp(firebaseConfig);
+// Inicialización
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 const auth = getAuth(app);
-const db   = getFirestore(app);
 
-  // 1. Función para Guardar Opinión (conectada a tus IDs de HTML)
-window.saveReview = async () => {
+let isAdmin = false;
+
+// --- SECCIÓN ADMIN ---
+
+// Función para loguearte (puedes llamarla desde un botón o consola)
+window.loginAdmin = async (email, password) => {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("¡Hola Admin! Sesión iniciada.");
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+};
+
+// Escuchador de usuario
+onAuthStateChanged(auth, (user) => {
+  isAdmin = !!user;
+  if (user) {
+    document.body.classList.add('admin-mode');
+    console.log("Modo administrador activo");
+  }
+});
+
+// Función para borrar comentarios (Solo tú podrás)
+window.borrarComentario = (id) => {
+  if (confirm("¿Eliminar este comentario?")) {
+    remove(ref(db, `comentarios/${id}`))
+      .then(() => alert("Eliminado"))
+      .catch(() => alert("No tienes permisos"));
+  }
+};
+
+// --- SECCIÓN PÚBLICA ---
+
+// FUNCIÓN PARA GUARDAR (Realtime DB)
+window.saveReview = () => {
   const nombre = document.getElementById('revName').value;
   const mensaje = document.getElementById('revText').value;
   const estrellas = document.getElementById('revRating').value;
 
-  if(!nombre || !mensaje) return alert("Por favor, completa tu nombre y mensaje.");
+  if(!nombre || !mensaje) return alert("Por favor, completa los campos");
 
-  try {
-    await addDoc(collection(db, "comentarios"), {
-      nombre: nombre,
-      mensaje: mensaje,
-      estrellas: parseInt(estrellas),
-      fecha: new Date()
-    });
+  const listaRef = ref(db, 'comentarios');
+  const nuevoComentarioRef = push(listaRef);
+  
+  set(nuevoComentarioRef, {
+    nombre: nombre,
+    mensaje: mensaje,
+    estrellas: parseInt(estrellas),
+    fecha: Date.now()
+  }).then(() => {
     alert("¡Gracias por tu opinión!");
     document.getElementById('revName').value = "";
     document.getElementById('revText').value = "";
-    window.loadReviewsFromFirebase(); // Recarga la lista automáticamente
-  } catch (e) { console.error("Error al guardar:", e); }
+  });
 };
 
-// 2. Función para Borrar (Solo funcionará si estás logueado)
-window.borrarComentario = async (id) => {
-  if(confirm("¿Eliminar este comentario permanentemente?")) {
-    try {
-      await deleteDoc(doc(db, "comentarios", id));
-      window.loadReviewsFromFirebase();
-    } catch (e) { alert("No tienes permisos para borrar."); }
-  }
-};
-
-// 3. Función para Cargar y Mostrar las reseñas en tu contenedor
-window.loadReviewsFromFirebase = async () => {
-  const container = document.getElementById('reviewsContainer');
-  if (!container) return;
-
-  const q = query(collection(db, "comentarios"), orderBy("fecha", "desc"), limit(10));
+// FUNCIÓN PARA LEER Y MOSTRAR
+const container = document.getElementById('reviewsContainer');
+onValue(ref(db, 'comentarios'), (snapshot) => {
+  const data = snapshot.val();
+  container.innerHTML = "";
   
-  try {
-    const querySnapshot = await getDocs(q);
-    container.innerHTML = ""; 
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      const stars = '★'.repeat(data.estrellas || 5) + '☆'.repeat(5 - (data.estrellas || 5));
+  if(data) {
+    // Convertimos a array y revertimos para ver los más nuevos primero
+    Object.keys(data).reverse().forEach(key => {
+      const review = data[key];
+      const stars = '★'.repeat(review.estrellas) + '☆'.repeat(5 - review.estrellas);
       
-      // Si eres admin, agregamos el botón de borrar
-      const btnBorrar = isAdmin ? `<button onclick="borrarComentario('${doc.id}')" style="color:var(--red); background:none; border:none; cursor:pointer; font-size:0.8rem; margin-top:10px; display:block">Eliminar Comentario</button>` : '';
+      // Si eres admin, aparece el botón de borrar
+      const btnBorrar = isAdmin ? `<button onclick="borrarComentario('${key}')" style="color:red; background:none; border:none; cursor:pointer; display:block; margin-top:10px;">Eliminar</button>` : '';
 
       container.innerHTML += `
-        <div class="review-card" style="background:var(--white); padding:1.5rem; border-radius:8px; margin-bottom:1rem; box-shadow:var(--sh)">
-          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem">
-            <strong style="color:var(--bark)">${data.nombre}</strong>
-            <span style="color:var(--gold)">${stars}</span>
+        <div class="review-card" style="background:white; padding:15px; margin-bottom:15px; border-radius:8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+          <div style="display:flex; justify-content:space-between;">
+            <strong>${review.nombre}</strong>
+            <span style="color:#b08038">${stars}</span>
           </div>
-          <p style="color:var(--text); font-size:0.95rem">${data.mensaje}</p>
+          <p style="margin-top:5px; color:#444;">${review.mensaje}</p>
           ${btnBorrar}
-        </div>
-      `;
+        </div>`;
     });
-  } catch (e) { console.error("Error al cargar:", e); }
-};
-
-// Exponer helpers globales para que el script principal los use
-window._fbAuth      = auth;
-window._fbDb        = db;
-window._fbSignIn    = signInWithEmailAndPassword;
-window._fbCollection = collection;
-window._fbAddDoc    = addDoc;
-window._fbGetDocs   = getDocs;
-window._fbQuery     = query;
-window._fbOrderBy   = orderBy;
-window._fbLimit     = limit;
-
-onAuthStateChanged(auth, user => { window._fbUser = user; });
-
-// Cargar reseñas cuando Firebase esté listo
-window.addEventListener('load', () => {
-  if (window.loadReviewsFromFirebase) window.loadReviewsFromFirebase();
+  } else {
+    container.innerHTML = "<p>No hay opiniones todavía.</p>";
+  }
 });
 </script>
-<style>
 :root {
   --bark:#2d1f14; --bark2:#4a3728;
   --moss:#3d5a3e; --moss2:#5a7d5b; --moss-lite:#eef4ee;
