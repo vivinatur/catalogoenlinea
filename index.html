@@ -468,7 +468,25 @@ img{max-width:100%;display:block}
 .toast{position:fixed;bottom:2rem;right:2rem;background:var(--moss);color:#fff;padding:.8rem 1.4rem;border-radius:10px;font-size:.85rem;font-weight:600;z-index:9998;box-shadow:0 8px 30px rgba(0,0,0,.2);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1}
 
-@media(max-width:768px){.sidebar{width:0;overflow:hidden}.amain{margin-left:0}.row,.row.three{grid-template-columns:1fr}}
+
+@media(max-width:768px){
+  .sidebar{
+    width:260px;
+    transform:translateX(-100%);
+    transition:transform .28s ease;
+    overflow:hidden;
+  }
+  .sidebar.open{
+    transform:translateX(0);
+    overflow-y:auto;
+  }
+  .amain{margin-left:0}
+  .row,.row.three{grid-template-columns:1fr}
+  .hamburger{display:flex !important}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99}
+  .sidebar-overlay.on{display:block}
+}
+.hamburger{display:none;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;background:var(--clay);border:none;cursor:pointer;font-size:1.1rem;flex-shrink:0;margin-right:.6rem}
 </style>
 </head>
 <body>
@@ -498,7 +516,7 @@ img{max-width:100%;display:block}
     <span id="cartBadge" class="cart-badge" style="display:none; top:-5px; right:-5px;">0</span>
   </button>
 
-  <button class="hbtn admin" onclick="showLock()" style="display:none">Admin</button>
+  <button class="hbtn ghost" onclick="showLock()" id="btnAdminAccess">⚙ Admin</button>
 </div>
     </div>
   </header>
@@ -575,7 +593,7 @@ img{max-width:100%;display:block}
       <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
         <button class="sb" style="background:var(--green);color:#fff" onclick="toggleCart()">🛒 Ver Carrito</button>
         <button class="sb cp" onclick="copyLink()">🔗 Compartir Catálogo</button>
-        <button class="sb" style="background:var(--clay);color:#fff;display:none" onclick="showLock()">⚙️ Panel Admin</button>
+        <button class="sb" style="background:var(--clay);color:#fff" onclick="showLock()">⚙️ Panel Admin</button>
       </div>
     </div>
   </section>
@@ -634,12 +652,16 @@ img{max-width:100%;display:block}
       <button class="sb-back" onclick="exitAdmin()">← Ver catálogo público</button>
     </div>
   </nav>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
   <div class="amain">
     <div class="atopbar">
-      <div>
-        <div class="atitle" id="adminTitle">Mis Productos</div>
-        <div class="asub"  id="adminSub">Gestioná tu catálogo</div>
+      <div style="display:flex;align-items:center;flex:1">
+        <button class="hamburger" onclick="toggleSidebar()" title="Menú">☰</button>
+        <div>
+          <div class="atitle" id="adminTitle">Mis Productos</div>
+          <div class="asub"  id="adminSub">Gestioná tu catálogo</div>
+        </div>
       </div>
       <span class="acnt" id="adminCnt"></span>
     </div>
@@ -1473,6 +1495,20 @@ function gPrev(e) { if(e) e.stopPropagation(); const g=document.getElementById('
 // ════════════════════════════════════════════════════
 //  LOCK / ADMIN NAV
 // ════════════════════════════════════════════════════
+function toggleSidebar() {
+  const sb = document.querySelector('.sidebar');
+  const ov = document.getElementById('sidebarOverlay');
+  if (!sb) return;
+  sb.classList.toggle('open');
+  if (ov) ov.classList.toggle('on');
+}
+function closeSidebar() {
+  const sb = document.querySelector('.sidebar');
+  const ov = document.getElementById('sidebarOverlay');
+  if (sb) sb.classList.remove('open');
+  if (ov) ov.classList.remove('on');
+}
+
 function showLock() {
   document.getElementById('lockScreen').style.display = 'flex';
   document.getElementById('lockInput').value = '';
@@ -1495,6 +1531,7 @@ const SEC_INFO = {
 };
 
 function goSec(sec) {
+  closeSidebar();
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
   document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
   const el = document.getElementById('sec-' + sec);
@@ -2018,7 +2055,7 @@ renderIAGrid();
 updateLogoUI(lsGet('vv_logo', null));
 
 </script> <footer style="margin-top: 50px; padding: 20px; text-align: center; opacity: 0.4;">
-  <button onclick="const p = prompt('Password de Admin:'); loginAdmin('yesicabarros27@GMAIL.COM', p)" 
+  <button onclick="const p = prompt('Password de Admin:'); loginAdmin('TU_CORREO@GMAIL.COM', p)" 
           style="background:none; border:1px solid var(--muted); color:var(--muted); padding:5px 10px; cursor:pointer; font-size:11px;">
     Acceso Gestión
   </button>
