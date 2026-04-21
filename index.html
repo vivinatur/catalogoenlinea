@@ -333,10 +333,17 @@ img{max-width:100%;display:block}
         <div class="hlogo" id="pubNombre">VIVINATUR</div>
         <div class="hlogo-sub" id="pubTagline">Cosmética Natural · Artesanal</div>
       </div>
-      <div class="hactions">
-        <a href="#reviews" class="hbtn ghost">Opiniones</a>
-        <a href="#contacto" class="hbtn ghost">Contacto</a>
-      </div>
+     <div class="hactions">
+  <a href="#contacto" class="hbtn ghost">Contacto</a>
+  <a href="#comentarios" class="hbtn ghost">Comentarios</a>
+  
+  <button class="hbtn ghost" onclick="toggleCart()" style="position:relative; border-color:var(--clay);">
+    🛒 Carrito
+    <span id="cart-count-header" class="cart-badge" style="display:none; top:-5px; right:-5px;">0</span>
+  </button>
+
+  <button class="hbtn admin" onclick="showLock()">Admin</button>
+</div>
     </div>
   </header>
 
