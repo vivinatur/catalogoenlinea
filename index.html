@@ -838,14 +838,14 @@ const MARCA_DEFAULT = {
 const CONTACTO_DEFAULT = {
   titulo:  '¿Hablamos?',
   sub:     'Estamos para responder tus consultas y ayudarte a encontrar el producto ideal para vos.',
-  wa:      '',
-  tel:     '',
+  wa:      '+5491163615070',
+  tel:     '01163615070',
   email:   '',
-  ciudad:  '',
+  ciudad:  'Florencio Varela, Buenos Aires',
   wa_msg:  'Hola! Vi tu catálogo y me interesa saber más 💜',
-  ig:      '',
+  ig:      'vivi_natur',
   fb:      '',
-  tt:      ''
+  tt:      'vivinatur6'
 };
 
 // ════════════════════════════════════════════════════
@@ -1632,29 +1632,6 @@ function renderReviews() {
   document.getElementById('reviewsContainer').innerHTML = html || '<p style="color:var(--muted);text-align:center">Sin opiniones aún</p>';
 }
 
-// ════════════════════════════════════════════════════
-//  DESCARGAR/CARGAR DATOS
-// ════════════════════════════════════════════════════
-function downloadData() {
-  const data = {
-    products: products,
-    reviews: reviews,
-    marca: marca,
-    contacto: contacto,
-    fecha: new Date().toISOString()
-  };
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `vivinatur-backup-${new Date().getTime()}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast('✓ Datos descargados');
-}
 
 // ════════════════════════════════════════════════════
 //  EVENT LISTENERS
