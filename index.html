@@ -1843,6 +1843,16 @@ function toggleAdmin() {
   s.style.display = (s.style.display === 'none') ? 'block' : 'none';
   if(s.style.display === 'block') s.scrollIntoView({behavior: 'smooth'});
 }
+
+  function entrarAdmin() {
+  // Ocultamos la vista pública
+  document.getElementById('view-public').classList.remove('active');
+  
+  // Mostramos la vista de administración
+  const adminView = document.getElementById('view-admin');
+  adminView.classList.add('active');
+  adminView.style.display = 'flex'; // Para que el menú lateral se vea bien
+}
 </script>
 </body>
 </html>
