@@ -120,16 +120,28 @@ onValue(ref(db, 'comentarios'), (snapshot) => {
 onValue(ref(db, 'productos'), (snap) => {
   const data = snap.val();
   if (data) {
-    const arr = Object.values(data);
+    const arr = Object.entries(data).map(([key, val]) => ({ ...val, id: val.id || key }));
     window._productsFromFB = arr;
     if (typeof window._onFBProductsLoaded === 'function') window._onFBProductsLoaded(arr);
+  } else {
+    if (typeof window._onFBProductsLoaded === 'function') window._onFBProductsLoaded([]);
   }
 });
 onValue(ref(db, 'marca'), (snap) => {
   const data = snap.val();
+  window._marcaFromFB = data;
+  if (typeof window._onFBMarcaLoaded === 'function') window._onFBMarcaLoaded(data);
+});
+onValue(ref(db, 'contacto'), (snap) => {
+  const data = snap.val();
+  window._contactoFromFB = data;
+  if (typeof window._onFBContactoLoaded === 'function') window._onFBContactoLoaded(data);
+});
+onValue(ref(db, 'contacto'), (snap) => {
+  const data = snap.val();
   if (data) {
-    window._marcaFromFB = data;
-    if (typeof window._onFBMarcaLoaded === 'function') window._onFBMarcaLoaded(data);
+    window._contactoFromFB = data;
+    if (typeof window._onFBContactoLoaded === 'function') window._onFBContactoLoaded(data);
   }
 });
 onValue(ref(db, 'contacto'), (snap) => {
@@ -1263,12 +1275,32 @@ window._onFBMarcaLoaded = function(data) {
   marca = data;
   renderPublic();
 };
+window._onFBProductsLoaded = function(arr) {
+  if (arr && arr.length > 0) {
+    products = arr;
+    renderPublic();
+    renderList();
+  } else {
+    fbSaveProducts(); // Firebase vacío → sube los defaults
+  }
+};
+window._onFBMarcaLoaded = function(data) {
+  if (data && Object.keys(data).length > 0) {
+    marca = data;
+    renderPublic();
+  } else {
+    fbSaveMarca();
+  }
+};
 window._onFBContactoLoaded = function(data) {
-  contacto = data;
-  renderPublic();
-  // Si el form de contacto está abierto, recargarlo
-  const panel = document.getElementById('sec-contacto');
-  if (panel && panel.classList.contains('show')) loadContactoForm();
+  if (data && Object.keys(data).length > 0) {
+    contacto = data;
+    renderPublic();
+    const panel = document.getElementById('sec-contacto');
+    if (panel && panel.classList.contains('show')) loadContactoForm();
+  } else {
+    fbSaveContacto();
+  }
 };
 
 let editingId  = null;
