@@ -127,23 +127,6 @@ onValue(ref(db, 'productos'), (snap) => {
     if (typeof window._onFBProductsLoaded === 'function') window._onFBProductsLoaded([]);
   }
 });
-onValue(ref(db, 'marca'), (snap) => {
-  const data = snap.val();
-  window._marcaFromFB = data;
-  if (typeof window._onFBMarcaLoaded === 'function') window._onFBMarcaLoaded(data);
-});
-onValue(ref(db, 'contacto'), (snap) => {
-  const data = snap.val();
-  window._contactoFromFB = data;
-  if (typeof window._onFBContactoLoaded === 'function') window._onFBContactoLoaded(data);
-});
-onValue(ref(db, 'contacto'), (snap) => {
-  const data = snap.val();
-  if (data) {
-    window._contactoFromFB = data;
-    if (typeof window._onFBContactoLoaded === 'function') window._onFBContactoLoaded(data);
-  }
-});
 onValue(ref(db, 'contacto'), (snap) => {
   const data = snap.val();
   if (data) {
@@ -1266,15 +1249,6 @@ let contacto = CONTACTO_DEFAULT;
 let products = PRODS_DEFAULT;
 
 // ── SYNC DESDE FIREBASE (se disparan cuando llegan datos) ──
-window._onFBProductsLoaded = function(arr) {
-  products = arr;
-  renderPublic();
-  renderList();
-};
-window._onFBMarcaLoaded = function(data) {
-  marca = data;
-  renderPublic();
-};
 window._onFBProductsLoaded = function(arr) {
   if (arr && arr.length > 0) {
     products = arr;
