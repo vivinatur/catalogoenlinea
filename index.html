@@ -127,12 +127,15 @@ onValue(ref(db, 'productos'), (snap) => {
     if (typeof window._onFBProductsLoaded === 'function') window._onFBProductsLoaded([]);
   }
 });
+onValue(ref(db, 'marca'), (snap) => {
+  const data = snap.val();
+  window._marcaFromFB = data;
+  if (typeof window._onFBMarcaLoaded === 'function') window._onFBMarcaLoaded(data);
+});
 onValue(ref(db, 'contacto'), (snap) => {
   const data = snap.val();
-  if (data) {
-    window._contactoFromFB = data;
-    if (typeof window._onFBContactoLoaded === 'function') window._onFBContactoLoaded(data);
-  }
+  window._contactoFromFB = data;
+  if (typeof window._onFBContactoLoaded === 'function') window._onFBContactoLoaded(data);
 });
 </script>
 <style>
