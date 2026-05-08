@@ -1801,7 +1801,7 @@ async function runIA() {
     const content = [];
     iaPhotos.forEach(b64 => content.push({ type:'image', source:{ type:'base64', media_type: b64.split(';')[0].split(':')[1], data: b64.split(',')[1] } }));
     content.push({ type:'text', text: prompt });
-    const resp = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json', 'anthropic-dangerous-direct-browser-access': 'true'},
+    const resp = await fetch('https://corsproxy.io/?https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json', 'anthropic-dangerous-direct-browser-access': 'true'},
     const d = await resp.json();
     const txt = (d.content||[]).map(i=>i.text||'').join('');
     const p = JSON.parse(txt.replace(/```json|```/g,'').trim());
