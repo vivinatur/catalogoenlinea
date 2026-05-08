@@ -1333,7 +1333,7 @@ function showToast(msg) {
 // ════════════════════════════════════════════════════
 function fbSaveProducts() {
   if (!window._fbDb || !window._fbRef || !window._fbSet) {
-    lsSet('vv_products', products); // fallback
+    setTimeout(fbSaveProducts, 500); // esperar a que Firebase esté listo
     return;
   }
   // Guardamos como objeto indexado por id para Realtime DB
@@ -1344,14 +1344,14 @@ function fbSaveProducts() {
 }
 function fbSaveMarca() {
   if (!window._fbDb || !window._fbRef || !window._fbSet) {
-    lsSet('vv_marca', marca); return;
+   setTimeout(fbSaveMarca, 500); return;
   }
   window._fbSet(window._fbRef(window._fbDb, 'marca'), marca)
     .catch(e => { console.warn('FB marca error:', e); lsSet('vv_marca', marca); });
 }
 function fbSaveContacto() {
   if (!window._fbDb || !window._fbRef || !window._fbSet) {
-    lsSet('vv_contacto', contacto); return;
+    setTimeout(fbSaveContacto, 500); return
   }
   window._fbSet(window._fbRef(window._fbDb, 'contacto'), contacto)
     .catch(e => { console.warn('FB contacto error:', e); lsSet('vv_contacto', contacto); });
@@ -1801,7 +1801,7 @@ async function runIA() {
     const content = [];
     iaPhotos.forEach(b64 => content.push({ type:'image', source:{ type:'base64', media_type: b64.split(';')[0].split(':')[1], data: b64.split(',')[1] } }));
     content.push({ type:'text', text: prompt });
-    const resp = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{ role:'user', content: iaPhotos.length ? content : prompt }] }) });
+    const resp = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json', 'anthropic-dangerous-direct-browser-access': 'true'},
     const d = await resp.json();
     const txt = (d.content||[]).map(i=>i.text||'').join('');
     const p = JSON.parse(txt.replace(/```json|```/g,'').trim());
