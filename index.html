@@ -76,43 +76,41 @@ window.borrarComentario = (id) => {
   }
 };
 
-// Reseñas públicas
-window.saveReview = () => {
-  const nombre    = document.getElementById('revName').value;
-  const mensaje   = document.getElementById('revText').value;
-  const estrellas = document.getElementById('revRating').value;
-  if(!nombre || !mensaje) return alert("Por favor, completa nombre y opini\u00f3n");
-  const nuevoRef = push(ref(db, 'comentarios'));
-  set(nuevoRef, { nombre, mensaje, estrellas: parseInt(estrellas), fecha: Date.now() })
-    .then(() => {
-      alert("\u00a1Gracias por tu opini\u00f3n!");
-      document.getElementById('revName').value = "";
-      document.getElementById('revText').value = "";
-    });
-};
+// saveReview y renderReviewsData están definidos en el script principal
+// para unificar el uso de Realtime Database
 
-// Leer comentarios en tiempo real
-const container = document.getElementById('reviewsContainer');
+// Leer comentarios en tiempo real y renderizar con la función compartida
 onValue(ref(db, 'comentarios'), (snapshot) => {
   const data = snapshot.val();
-  container.innerHTML = "";
-  if(data) {
-    Object.keys(data).reverse().forEach(key => {
-      const review = data[key];
-      const stars = '\u2605'.repeat(review.estrellas) + '\u2606'.repeat(5 - review.estrellas);
-      const btnBorrar = isAdmin ? `<button onclick="borrarComentario('${key}')" style="color:var(--red); background:none; border:none; cursor:pointer; display:block; margin-top:10px; font-size:12px;">Eliminar Opini\u00f3n</button>` : '';
-      container.innerHTML += `
-        <div class="review-card" style="background:var(--white); padding:1.5rem; border-radius:8px; margin-bottom:1rem; box-shadow:var(--sh)">
-          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem">
-            <strong style="color:var(--bark)">${review.nombre}</strong>
+  const container = document.getElementById('reviewsContainer');
+  if (!container) return;
+
+  if (data) {
+    // Convertimos a array ordenado por ts desc y agregamos la key para borrar
+    const items = Object.entries(data)
+      .map(([key, val]) => ({ ...val, _key: key }))
+      .sort((a, b) => (b.ts || 0) - (a.ts || 0));
+
+    const html = items.map(r => {
+      const estrellas = parseInt(r.estrellas || 5);
+      const stars = '\u2605'.repeat(estrellas) + '\u2606'.repeat(5 - estrellas);
+      const btnBorrar = isAdmin
+        ? `<button onclick="borrarComentario('${r._key}')" style="color:var(--red);background:none;border:none;cursor:pointer;display:block;margin-top:10px;font-size:12px;">Eliminar Opini\u00f3n</button>`
+        : '';
+      return `
+        <div class="review-card">
+          <div style="display:flex;justify-content:space-between;margin-bottom:0.4rem">
+            <div class="review-name">${r.nombre || ''}</div>
             <span style="color:var(--gold)">${stars}</span>
           </div>
-          <p style="color:var(--text); font-size:0.95rem">${review.mensaje}</p>
+          <div class="review-text">${r.mensaje || ''}</div>
+          ${r.fecha ? `<div class="review-date">${r.fecha}</div>` : ''}
           ${btnBorrar}
         </div>`;
-    });
+    }).join('');
+    container.innerHTML = html;
   } else {
-    container.innerHTML = "<p style='text-align:center; color:var(--muted)'>A\u00fan no hay opiniones. \u00a1S\u00e9 el primero!</p>";
+    container.innerHTML = "<p style='text-align:center;color:var(--muted)'>A\u00fan no hay opiniones. \u00a1S\u00e9 el primero!</p>";
   }
 });
 
@@ -1081,28 +1079,33 @@ async function doLogin() {
   }
 }
 
-async function saveReview() {
-  const rating = parseInt(document.getElementById('revRating').value);
-  const name   = document.getElementById('revName').value.trim();
-  const text   = document.getElementById('revText').value.trim();
-  if (!name || !text) { showToast('Completa todos los campos'); return; }
+// saveReview usa Realtime Database (compatible con el módulo Firebase del inicio)
+window.saveReview = async function() {
+  const estrellas = parseInt(document.getElementById('revRating').value);
+  const nombre    = document.getElementById('revName').value.trim();
+  const mensaje   = document.getElementById('revText').value.trim();
+  if (!nombre || !mensaje) { showToast('Completa todos los campos'); return; }
 
-  const review = { name, rating, text, fecha: new Date().toLocaleDateString('es-ES'), ts: Date.now() };
+  const fecha = new Date().toLocaleDateString('es-ES');
 
-  // Guardar en Firestore si está disponible, si no en localStorage
-  if (window._fbDb && window._fbCollection && window._fbAddDoc) {
+  if (window._fbDb && window._fbPush && window._fbRef && window._fbSet) {
     try {
-      await window._fbAddDoc(window._fbCollection(window._fbDb, 'reviews'), review);
+      const nuevoRef = window._fbPush(window._fbRef(window._fbDb, 'comentarios'));
+      await window._fbSet(nuevoRef, { nombre, mensaje, estrellas, fecha, ts: Date.now() });
       showToast('✓ Opinión guardada');
     } catch(e) {
-      console.warn('Error Firestore, guardando localmente:', e);
-      reviews.push(review);
-      lsSet('vv_reviews', reviews);
+      console.warn('Error Firebase, guardando localmente:', e);
+      const list = lsGet('vv_reviews', []);
+      list.push({ nombre, mensaje, estrellas, fecha, ts: Date.now() });
+      lsSet('vv_reviews', list);
+      renderReviewsLocal();
       showToast('✓ Opinión guardada (local)');
     }
   } else {
-    reviews.push(review);
-    lsSet('vv_reviews', reviews);
+    const list = lsGet('vv_reviews', []);
+    list.push({ nombre, mensaje, estrellas, fecha, ts: Date.now() });
+    lsSet('vv_reviews', list);
+    renderReviewsLocal();
     showToast('✓ Opinión guardada');
   }
 
@@ -1110,48 +1113,42 @@ async function saveReview() {
   document.getElementById('revText').value = '';
   document.getElementById('revRating').value = 5;
   document.getElementById('revRatingLabel').textContent = '★★★★★';
-  loadReviewsFromFirebase();
-}
+};
 
-async function loadReviewsFromFirebase() {
-  window.loadReviewsFromFirebase = loadReviewsFromFirebase;
-  if (window._fbDb && window._fbCollection && window._fbGetDocs) {
-    try {
-      const q = window._fbQuery(
-        window._fbCollection(window._fbDb, 'reviews'),
-        window._fbOrderBy('ts', 'desc'),
-        window._fbLimit(6)
-      );
-      const snap = await window._fbGetDocs(q);
-      const loaded = [];
-      snap.forEach(doc => loaded.push(doc.data()));
-      renderReviewsData(loaded);
-      return;
-    } catch(e) {
-      console.warn('No se pudo cargar desde Firestore, usando localStorage:', e);
-    }
-  }
-  // Fallback: localStorage
-  renderReviewsData(lsGet('vv_reviews', []).slice(-6).reverse());
+// Fallback local cuando Firebase no está disponible
+function renderReviewsLocal() {
+  const list = lsGet('vv_reviews', []).slice().reverse().slice(0, 20);
+  renderReviewsData(list);
 }
 
 function renderReviews() {
-  loadReviewsFromFirebase();
+  // Las reseñas las maneja el onValue del módulo Firebase ES
+  // Solo activamos fallback local si Firebase aún no cargó
+  if (!window._fbDb) renderReviewsLocal();
 }
 
+// renderReviewsData: acepta el formato de Realtime DB {nombre, mensaje, estrellas, fecha}
 function renderReviewsData(list) {
+  if (!list || !list.length) {
+    document.getElementById('reviewsContainer').innerHTML = '<p style="color:var(--muted);text-align:center">Sin opiniones aún. ¡Sé el primero!</p>';
+    return;
+  }
   const html = list.map(r => {
-    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+    const estrellas = parseInt(r.estrellas || r.rating || 5);
+    const stars = '★'.repeat(estrellas) + '☆'.repeat(5 - estrellas);
+    const nombre  = r.nombre  || r.name  || '';
+    const mensaje = r.mensaje || r.text  || '';
+    const fecha   = r.fecha   || '';
     return `
       <div class="review-card">
-        <div class="review-rating">${stars}</div>
-        <div class="review-name">${r.name}</div>
-        <div class="review-text">${r.text}</div>
-        <div class="review-date">${r.fecha}</div>
+        <div class="review-rating" style="color:var(--gold);font-size:1rem">${stars}</div>
+        <div class="review-name">${nombre}</div>
+        <div class="review-text">${mensaje}</div>
+        ${fecha ? `<div class="review-date">${fecha}</div>` : ''}
       </div>
     `;
   }).join('');
-  document.getElementById('reviewsContainer').innerHTML = html || '<p style="color:var(--muted);text-align:center">Sin opiniones aún</p>';
+  document.getElementById('reviewsContainer').innerHTML = html;
 }
 
 
@@ -1826,7 +1823,18 @@ async function runIA() {
     const content = [];
     iaPhotos.forEach(b64 => content.push({ type:'image', source:{ type:'base64', media_type: b64.split(';')[0].split(':')[1], data: b64.split(',')[1] } }));
     content.push({ type:'text', text: prompt });
-    const resp = await fetch('https://corsproxy.io/?https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json', 'anthropic-dangerous-direct-browser-access': 'true'},
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content }]
+      })
+    });
     const d = await resp.json();
     const txt = (d.content||[]).map(i=>i.text||'').join('');
     const p = JSON.parse(txt.replace(/```json|```/g,'').trim());
